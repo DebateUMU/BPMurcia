@@ -6,7 +6,7 @@
     <meta name="description" content="XI Torneo de Debate BP Ciudad de Murcia 2026.">
     <meta name="theme-color" content="#D9291C">
     <title>BP Murcia 2026 | Torneo de Debate</title>
-    <link rel="icon" href="img/BPMurcia2026.png">
+    <link rel="icon" href="https://placehold.co/32x32/D9291C/FFFFFF?text=BP">
     
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -45,7 +45,7 @@
                         }
                     },
                     screens: {
-                        'xs': '475px', // Breakpoint extra para móviles pequeños
+                        'xs': '475px',
                     }
                 }
             }
@@ -56,15 +56,17 @@
         body { 
             background-color: #f8f8f8; 
             color: #0f0f0f;
-            overflow-x: hidden; /* CRÍTICO: Evita el scroll lateral en móvil */
+            overflow-x: hidden; /* CRÍTICO */
+            -webkit-font-smoothing: antialiased;
         }
         
+        /* Brutalism reset */
         * { border-radius: 0 !important; }
 
         .text-stroke { -webkit-text-stroke: 1px #0f0f0f; color: transparent; }
         .text-stroke-white { -webkit-text-stroke: 1px #ffffff; color: transparent; }
         
-        /* Textura granulada */
+        /* Ruido estético */
         .noise-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -75,7 +77,7 @@
         }
 
         .link-card { transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1); }
-        .link-card:active { transform: scale(0.98); } /* Feedback táctil en móvil */
+        .link-card:active { transform: scale(0.98); } 
         
         @media (min-width: 768px) {
             .link-card:hover {
@@ -89,26 +91,32 @@
             filter: grayscale(100%) contrast(1.1);
             transition: all 0.5s ease;
         }
-        /* En móvil (touch) quitamos el grayscale al hacer foco/tap */
-        .group:hover .adju-img, .group:active .adju-img {
+        
+        /* En móvil o hover: color */
+        .group:hover .adju-img, .group:active .adju-img, .group:focus .adju-img {
             filter: grayscale(0%) contrast(1);
         }
 
         #mobile-menu {
             transition: transform 0.3s ease-in-out, opacity 0.3s ease;
             transform-origin: top;
+            /* Fix para altura móvil */
+            height: calc(100vh - 70px); 
         }
         .menu-hidden { transform: scaleY(0); opacity: 0; pointer-events: none; }
         .menu-visible { transform: scaleY(1); opacity: 1; pointer-events: auto; }
+        
+        /* Fix para evitar salto de scroll */
+        .no-scroll { overflow: hidden; height: 100vh; }
     </style>
 </head>
-<body class="font-body antialiased selection:bg-murcia-red selection:text-white pt-20">
+<body class="font-body selection:bg-murcia-red selection:text-white pt-[70px] md:pt-[80px]">
 
     <div class="noise-overlay"></div>
 
-    <nav class="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md border-b-4 border-murcia-red px-4 md:px-12 py-3 md:py-4 transition-all duration-300" id="navbar">
-        <div class="flex justify-between items-center max-w-[1400px] mx-auto">
-            <a href="#" class="w-28 md:w-40 block hover:opacity-80 transition-opacity">
+    <nav class="fixed top-0 left-0 w-full z-50 bg-white/95 backdrop-blur-md border-b-4 border-murcia-red px-4 md:px-12 h-[70px] md:h-[80px] flex items-center transition-all duration-300" id="navbar">
+        <div class="flex justify-between items-center w-full max-w-[1400px] mx-auto">
+            <a href="#" class="w-24 md:w-36 block hover:opacity-80 transition-opacity">
                 <img src="img/BPMurcia2026.png" onerror="this.onerror=null; this.src='https://placehold.co/200x80/D9291C/FFFFFF?text=BP+MURCIA&font=roboto'" alt="Logo BP Murcia" class="w-full h-auto">
             </a>
             
@@ -119,25 +127,28 @@
                 <a href="#tab" class="hover:text-murcia-red transition-colors">Tab</a>
             </div>
 
-            <button id="menu-btn" aria-label="Abrir menú" class="md:hidden text-3xl text-murcia-dark focus:outline-none p-2">
+            <button id="menu-btn" aria-label="Abrir menú" class="md:hidden text-3xl text-murcia-dark focus:outline-none p-2 active:scale-95 transition-transform">
                 <i class="ph ph-list"></i>
             </button>
         </div>
 
-        <div id="mobile-menu" class="absolute top-full left-0 w-full bg-white border-b-4 border-murcia-dark shadow-2xl menu-hidden md:hidden h-screen sm:h-auto">
+        <div id="mobile-menu" class="absolute top-[66px] left-0 w-full bg-white border-b-4 border-murcia-dark shadow-2xl menu-hidden md:hidden overflow-y-auto">
             <div class="flex flex-col p-6 space-y-2 font-display text-2xl uppercase tracking-widest text-center">
-                <a href="#registro-links" class="mobile-link py-4 border-b border-gray-100 active:bg-murcia-pastel active:text-murcia-red">Inscripción</a>
-                <a href="#adjudicacion" class="mobile-link py-4 border-b border-gray-100 active:bg-murcia-pastel active:text-murcia-red">Adjudicación</a>
-                <a href="#sedes" class="mobile-link py-4 border-b border-gray-100 active:bg-murcia-pastel active:text-murcia-red">Sedes</a>
-                <a href="#tab" class="mobile-link py-4 active:bg-murcia-pastel active:text-murcia-red">Tab</a>
+                <a href="#registro-links" class="mobile-link py-6 border-b border-gray-100 active:bg-murcia-pastel active:text-murcia-red transition-colors">Inscripción</a>
+                <a href="#adjudicacion" class="mobile-link py-6 border-b border-gray-100 active:bg-murcia-pastel active:text-murcia-red transition-colors">Adjudicación</a>
+                <a href="#sedes" class="mobile-link py-6 border-b border-gray-100 active:bg-murcia-pastel active:text-murcia-red transition-colors">Sedes</a>
+                <a href="#tab" class="mobile-link py-6 active:bg-murcia-pastel active:text-murcia-red transition-colors">Tab</a>
+            </div>
+            <div class="p-6 text-center">
+                <p class="font-mono text-xs text-gray-400">Dev by JFK</p>
             </div>
         </div>
     </nav>
 
     <header class="relative min-h-[85vh] flex flex-col justify-center items-center px-4 overflow-hidden border-b-4 border-murcia-dark bg-white">
-        <div class="absolute inset-0 flex flex-col justify-between opacity-[0.03] md:opacity-5 select-none pointer-events-none overflow-hidden">
+        <div class="absolute inset-0 flex flex-col justify-between opacity-[0.03] md:opacity-5 select-none pointer-events-none overflow-hidden" aria-hidden="true">
             <div class="whitespace-nowrap animate-marquee font-display text-[15vh] md:text-[15rem] leading-none text-murcia-dark">
-                ORGANIZADO POR EL CLUB DE DEBATE DE LA UNIVERSIDAD DE MURCIA ORGANIZADO POR EL CLUB DE DEBATE DE LA UNIVERSIDAD DE MURCIA ORGANIZADO POR EL CLUB DE DEBATE DE LA UNIVERSIDAD DE MURCIA 
+                ORGANIZADO POR EL CLUB DE DEBATE DE LA UNIVERSIDAD DE MURCIA ORGANIZADO POR EL CLUB DE DEBATE DE LA UNIVERSIDAD DE MURCIA
             </div>
             <div class="whitespace-nowrap animate-marquee font-display text-[15vh] md:text-[15rem] leading-none text-murcia-dark" style="animation-direction: reverse;">
                 BP MURCIA 2026 BP MURCIA 2026 BP MURCIA 2026 BP MURCIA 2026 BP MURCIA 2026 
@@ -147,7 +158,7 @@
         <div class="relative z-10 text-center p-4 md:p-8 max-w-7xl mx-auto animate-float w-full">
             <div class="inline-block mb-6 md:mb-8 relative">
                 <div class="absolute inset-0 bg-murcia-red translate-x-1 translate-y-1 md:translate-x-2 md:translate-y-2"></div>
-                <p class="relative text-murcia-dark font-bold tracking-[0.2em] md:tracking-[0.4em] uppercase text-xs md:text-base bg-white border-2 border-murcia-dark px-4 py-1 md:px-6 md:py-2">
+                <p class="relative text-murcia-dark font-bold tracking-[0.2em] md:tracking-[0.4em] uppercase text-[10px] md:text-base bg-white border-2 border-murcia-dark px-4 py-1 md:px-6 md:py-2 whitespace-nowrap">
                     Torneo de Debate BP • 2026
                 </p>
             </div>
@@ -157,34 +168,18 @@
                 <span class="text-stroke text-transparent hover:text-murcia-red transition-colors duration-500">MURCIA</span>
             </h1>
             
-            <p class="mt-6 md:mt-8 font-mono text-murcia-dark/70 text-xs md:text-lg max-w-xs md:max-w-xl mx-auto uppercase tracking-wider">
+            <p class="mt-6 md:mt-8 font-mono text-murcia-dark/70 text-xs md:text-lg max-w-xs md:max-w-xl mx-auto uppercase tracking-wider leading-relaxed">
                 Hay pocas formas mejores de pasar San Valentín...
             </p>
         </div>
         
-        <div class="absolute bottom-6 md:bottom-10 animate-bounce">
+        <div class="absolute bottom-6 md:bottom-10 animate-bounce pointer-events-none">
             <i class="ph ph-arrow-down text-3xl md:text-4xl text-murcia-red"></i>
         </div>
     </header>
 
-    <div class="bg-murcia-red py-2 md:py-3 overflow-hidden border-b-4 border-murcia-dark relative z-20">
+    <div class="bg-murcia-red py-3 overflow-hidden border-b-4 border-murcia-dark relative z-20">
         <div class="flex animate-marquee whitespace-nowrap">
-            <span class="text-white font-display text-sm md:text-xl mx-4 md:mx-8 uppercase tracking-widest">• Inscripciones Abiertas •</span>
-            <span class="text-stroke-white font-display text-sm md:text-xl mx-4 md:mx-8 uppercase tracking-widest">• Plazas Limitadas •</span>
-            <span class="text-white font-display text-sm md:text-xl mx-4 md:mx-8 uppercase tracking-widest">• Inscripciones Abiertas •</span>
-            <span class="text-stroke-white font-display text-sm md:text-xl mx-4 md:mx-8 uppercase tracking-widest">• Plazas Limitadas •</span>
-            <span class="text-white font-display text-sm md:text-xl mx-4 md:mx-8 uppercase tracking-widest">• Inscripciones Abiertas •</span>
-            <span class="text-stroke-white font-display text-sm md:text-xl mx-4 md:mx-8 uppercase tracking-widest">• Plazas Limitadas •</span>
-            <span class="text-white font-display text-sm md:text-xl mx-4 md:mx-8 uppercase tracking-widest">• Inscripciones Abiertas •</span>
-            <span class="text-stroke-white font-display text-sm md:text-xl mx-4 md:mx-8 uppercase tracking-widest">• Plazas Limitadas •</span>
-            <span class="text-white font-display text-sm md:text-xl mx-4 md:mx-8 uppercase tracking-widest">• Inscripciones Abiertas •</span>
-            <span class="text-stroke-white font-display text-sm md:text-xl mx-4 md:mx-8 uppercase tracking-widest">• Plazas Limitadas •</span>
-            <span class="text-white font-display text-sm md:text-xl mx-4 md:mx-8 uppercase tracking-widest">• Inscripciones Abiertas •</span>
-            <span class="text-stroke-white font-display text-sm md:text-xl mx-4 md:mx-8 uppercase tracking-widest">• Plazas Limitadas •</span>
-            <span class="text-white font-display text-sm md:text-xl mx-4 md:mx-8 uppercase tracking-widest">• Inscripciones Abiertas •</span>
-            <span class="text-stroke-white font-display text-sm md:text-xl mx-4 md:mx-8 uppercase tracking-widest">• Plazas Limitadas •</span>
-            <span class="text-white font-display text-sm md:text-xl mx-4 md:mx-8 uppercase tracking-widest">• Inscripciones Abiertas •</span>
-            <span class="text-stroke-white font-display text-sm md:text-xl mx-4 md:mx-8 uppercase tracking-widest">• Plazas Limitadas •</span>
             <span class="text-white font-display text-sm md:text-xl mx-4 md:mx-8 uppercase tracking-widest">• Inscripciones Abiertas •</span>
             <span class="text-stroke-white font-display text-sm md:text-xl mx-4 md:mx-8 uppercase tracking-widest">• Plazas Limitadas •</span>
             <span class="text-white font-display text-sm md:text-xl mx-4 md:mx-8 uppercase tracking-widest">• Inscripciones Abiertas •</span>
@@ -204,7 +199,7 @@
                 </h2>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSfiT_gFkbi61foBnKvIdjGdFBe4rxisB3fELlG57pWxhA0dbA/viewform?pli=1" target="_blank" class="link-card block border-4 border-murcia-dark bg-white relative p-6 md:p-12 group">
                     <div class="flex justify-between items-start mb-8 md:mb-12">
                         <div class="bg-murcia-dark text-white px-2 py-1 md:px-3 font-mono text-[10px] md:text-xs uppercase tracking-widest">Debatientes</div>
@@ -227,7 +222,7 @@
                     </div>
                 </a>
                 
-                <div class="block border-4 border-gray-200 bg-gray-50 p-6 md:p-12 opacity-75 grayscale">
+                <div class="block border-4 border-gray-200 bg-gray-50 p-6 md:p-12 opacity-75">
                     <div class="flex justify-between items-start mb-4 md:mb-12">
                         <div class="bg-gray-300 text-gray-500 px-2 py-1 font-mono text-[10px] uppercase tracking-widest">Próximamente</div>
                         <i class="ph ph-lock-key text-2xl md:text-4xl text-gray-300"></i>
@@ -235,12 +230,12 @@
                     <h3 class="font-display text-xl md:text-4xl uppercase leading-none text-gray-400">Examen Jueces</h3>
                 </div>
 
-                 <div class="block border-4 border-gray-200 bg-gray-50 p-6 md:p-12 opacity-75 grayscale">
+                 <div class="block border-4 border-gray-200 bg-gray-50 p-6 md:p-12 opacity-75">
                     <div class="flex justify-between items-start mb-4 md:mb-12">
                         <div class="bg-gray-300 text-gray-500 px-2 py-1 font-mono text-[10px] uppercase tracking-widest">Próximamente</div>
                         <i class="ph ph-fork-knife text-2xl md:text-4xl text-gray-300"></i>
                     </div>
-                    <h3 class="font-display text-xl md:text-4xl uppercase leading-none text-gray-400">Comida Del Sabado</h3>
+                    <h3 class="font-display text-xl md:text-4xl uppercase leading-none text-gray-400">Comida Sábado</h3>
                 </div>
             </div>
         </section>
@@ -264,7 +259,7 @@
                     </div>
                 </article>
 
-                 <article class="group relative bg-white hover:bg-black hover:text-white transition-colors duration-300">
+                <article class="group relative bg-white hover:bg-black hover:text-white transition-colors duration-300">
                     <div class="h-80 md:h-[400px] overflow-hidden relative border-b-2 border-murcia-dark group-hover:border-white/20">
                         <img src="img/bea.png" onerror="this.src='https://placehold.co/400x500/eeeeee/000000?text=CA'" alt="Beatriz Tavares" class="w-full h-full object-cover adju-img">
                         <div class="absolute top-2 right-2 md:top-4 md:right-4 font-display text-2xl md:text-4xl text-transparent text-stroke group-hover:text-stroke-white opacity-50">02</div>
@@ -282,7 +277,7 @@
                     </div>
                     <div class="p-6 md:p-8">
                         <h3 class="font-display text-xl md:text-2xl uppercase leading-none mb-2">Pau <br>García</h3>
-                        <p class="font-mono text-[10px] md:text-xs uppercase tracking-widest opacity-60 group-hover:text-murcia-red">Por poner</p>
+                        <p class="font-mono text-[10px] md:text-xs uppercase tracking-widest opacity-60 group-hover:text-murcia-red">Nos daba fomo ser el único torneo al que no venga</p>
                     </div>
                 </article>
 
@@ -292,7 +287,7 @@
                         <div class="absolute top-2 right-2 md:top-4 md:right-4 font-display text-2xl md:text-4xl text-transparent text-stroke group-hover:text-stroke-white opacity-50">04</div>
                     </div>
                     <div class="p-6 md:p-8">
-                        <h3 class="font-display text-xl md:text-2xl uppercase leading-none mb-2">Chelu <br>José Luis Muñoz Reja</h3>
+                        <h3 class="font-display text-xl md:text-2xl uppercase leading-none mb-2">Chelu <br>José L. Muñoz</h3>
                         <p class="font-mono text-[10px] md:text-xs uppercase tracking-widest opacity-60 group-hover:text-murcia-red">Ha hecho cosillas en debate</p>
                     </div>
                 </article>
@@ -303,7 +298,7 @@
                         <div class="absolute top-2 right-2 md:top-4 md:right-4 font-display text-2xl md:text-4xl text-transparent text-stroke group-hover:text-stroke-white opacity-50">05</div>
                     </div>
                     <div class="p-6 md:p-8">
-                        <h3 class="font-display text-xl md:text-2xl uppercase leading-none mb-2">Gabriel <br>Casati Cancho</h3>
+                        <h3 class="font-display text-xl md:text-2xl uppercase leading-none mb-2">Gabriel <br>Casati</h3>
                         <p class="font-mono text-[10px] md:text-xs uppercase tracking-widest opacity-60 group-hover:text-murcia-red">Venid a Murcia. Calidad Ga-rantizada</p>
                     </div>
                 </article>
@@ -315,7 +310,7 @@
                 <h2 class="font-display text-4xl md:text-8xl mb-12 uppercase text-stroke text-murcia-dark leading-none">Las <span class="text-murcia-red">Sedes</span></h2>
                 
                 <div class="flex flex-col border-t-2 border-murcia-dark">
-                    <a href="https://maps.app.goo.gl/7XWtguE8LMLhXzBu5" target="_blank" class="group flex flex-col md:flex-row items-start md:items-center border-b-2 border-murcia-dark py-8 md:py-12 hover:bg-murcia-pastel transition-colors duration-300">
+                    <a href="https://maps.google.com" target="_blank" class="group flex flex-col md:flex-row items-start md:items-center border-b-2 border-murcia-dark py-8 md:py-12 hover:bg-murcia-pastel transition-colors duration-300">
                         <div class="w-full md:w-1/4 font-display text-5xl md:text-7xl text-gray-200 group-hover:text-murcia-red transition-colors duration-300">01</div>
                         <div class="w-full md:w-3/4 mt-4 md:mt-0 md:px-4">
                             <h3 class="text-2xl md:text-5xl font-display uppercase mb-3 leading-none group-hover:translate-x-2 transition-transform duration-300">Salón de Grados</h3>
@@ -326,7 +321,7 @@
                         </div>
                     </a>
 
-                    <a href="https://maps.app.goo.gl/h53woSaX59yFm5j18" target="_blank" class="group flex flex-col md:flex-row items-start md:items-center border-b-2 border-murcia-dark py-8 md:py-12 hover:bg-murcia-pastel transition-colors duration-300">
+                    <a href="https://maps.google.com" target="_blank" class="group flex flex-col md:flex-row items-start md:items-center border-b-2 border-murcia-dark py-8 md:py-12 hover:bg-murcia-pastel transition-colors duration-300">
                         <div class="w-full md:w-1/4 font-display text-5xl md:text-7xl text-gray-200 group-hover:text-murcia-red transition-colors duration-300">02</div>
                         <div class="w-full md:w-3/4 mt-4 md:mt-0 md:px-4">
                             <h3 class="text-2xl md:text-5xl font-display uppercase mb-3 leading-none group-hover:translate-x-2 transition-transform duration-300">Aulario La Merced</h3>
@@ -337,22 +332,22 @@
                         </div>
                     </a>
 
-                    <a href="https://i.pinimg.com/originals/07/2c/88/072c88a8010e52504af050f9388c41f1.gif" target="_blank" class="group flex flex-col md:flex-row items-start md:items-center border-b-2 border-murcia-dark py-8 md:py-12 hover:bg-murcia-pastel transition-colors duration-300">
+                    <div class="group flex flex-col md:flex-row items-start md:items-center border-b-2 border-murcia-dark py-8 md:py-12 opacity-80">
                         <div class="w-full md:w-1/4 font-display text-5xl md:text-7xl text-gray-200 group-hover:text-murcia-red transition-colors duration-300">03</div>
                         <div class="w-full md:w-3/4 mt-4 md:mt-0 md:px-4">
-                            <h3 class="text-2xl md:text-5xl font-display uppercase mb-3 leading-none group-hover:translate-x-2 transition-transform duration-300">Proximanmente...</h3>
+                            <h3 class="text-2xl md:text-5xl font-display uppercase mb-3 leading-none">Próximamente...</h3>
                             <div class="flex flex-wrap gap-2 md:gap-4 font-mono text-[10px] md:text-xs uppercase tracking-widest">
                                 <span class="bg-black text-white px-2 py-1">Domingo</span>
-                                <span class="bg-murcia-red text-white px-2 py-1">Semifinales & Gran Final</span>
+                                <span class="bg-murcia-red text-white px-2 py-1">Final</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
                 </div>
             </div>
         </section>
 
         <section id="tab" class="bg-murcia-dark text-white border-t-4 border-murcia-red overflow-hidden relative">
-            <div class="absolute top-0 right-0 w-1/2 h-full bg-murcia-red/10 skew-x-12 transform origin-top translate-x-1/4"></div>
+            <div class="absolute top-0 right-0 w-1/2 h-full bg-murcia-red/10 skew-x-12 transform origin-top translate-x-1/4 pointer-events-none"></div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 relative z-10">
                 <div class="p-8 md:p-24 flex flex-col justify-center border-b-4 lg:border-b-0 lg:border-r-4 border-white/10">
@@ -365,7 +360,7 @@
                 </div>
                 
                 <div class="flex items-center justify-center p-8 md:p-24">
-                    <a href="LINK_A_TABBYCAT" target="_blank" class="group relative inline-block w-full max-w-md cursor-pointer">
+                    <a href="#" target="_blank" class="group relative inline-block w-full max-w-md cursor-pointer">
                         <div class="absolute inset-0 bg-murcia-red translate-x-2 translate-y-2 md:translate-x-3 md:translate-y-3 transition-transform duration-300 group-hover:translate-x-1 group-hover:translate-y-1"></div>
                         <div class="relative bg-white border-4 border-white p-8 md:p-12 text-center transition-transform duration-300 group-hover:-translate-x-1 group-hover:-translate-y-1">
                             <span class="block font-display text-3xl md:text-5xl text-murcia-dark uppercase mb-2 group-hover:text-murcia-red transition-colors">Ver Tab</span>
@@ -417,6 +412,7 @@
             const mobileMenu = document.getElementById('mobile-menu');
             const mobileLinks = document.querySelectorAll('.mobile-link');
             const icon = menuBtn.querySelector('i');
+            const body = document.body;
             let isMenuOpen = false;
 
             function toggleMenu() {
@@ -426,13 +422,13 @@
                     mobileMenu.classList.add('menu-visible');
                     icon.classList.remove('ph-list');
                     icon.classList.add('ph-x');
-                    document.body.style.overflow = 'hidden'; // Bloquea scroll
+                    body.classList.add('no-scroll'); // CSS class para bloquear scroll
                 } else {
                     mobileMenu.classList.remove('menu-visible');
                     mobileMenu.classList.add('menu-hidden');
                     icon.classList.remove('ph-x');
                     icon.classList.add('ph-list');
-                    document.body.style.overflow = 'auto'; // Restaura scroll
+                    body.classList.remove('no-scroll');
                 }
             }
 
@@ -449,10 +445,8 @@
             window.addEventListener('scroll', () => {
                 if (window.scrollY > 20) {
                     nav.classList.add('shadow-xl');
-                    nav.classList.replace('py-4', 'py-3'); // Compacta el nav
                 } else {
                     nav.classList.remove('shadow-xl');
-                    nav.classList.replace('py-3', 'py-4');
                 }
             });
         });
