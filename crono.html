@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timer Pro | BP Murcia 2026</title>
+    <title>Timer | BP Murcia 2026</title>
     <link rel="icon" href="img/BPMurcia2026.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -155,9 +155,7 @@
     <header class="flex justify-between items-center p-6 border-b-4 border-murcia-dark dark:border-paper bg-white dark:bg-murcia-dark z-20 relative shrink-0 transition-colors duration-300">
         <div class="flex items-center gap-4">
             <img src="img/BPMurcia2026.png" alt="BP Murcia Logo" class="h-12 transition-all hover:scale-105">
-            <div class="hidden md:block font-display text-xl uppercase tracking-wider leading-none">
-                BP Murcia<br><span class="text-murcia-red">Timer</span>
-            </div>
+            
         </div>
         
         <div class="flex items-center gap-6">
@@ -282,8 +280,8 @@
 
                 <div class="flex justify-between items-center mb-6 p-4 border-4 border-current bg-white/5 hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
                     <div class="flex flex-col">
-                        <span class="font-display text-xl uppercase">Modo Cortesía</span>
-                        <span class="font-mono text-xs text-murcia-red font-bold mt-1 bg-murcia-pastel/50 inline-block px-2 py-0.5 border border-murcia-red/20">1s Sonido + 15s Espera</span>
+                        <span class="font-display text-xl uppercase">Tiempo de Cortesía</span>
+                        <span class="font-mono text-xs text-murcia-red font-bold mt-1 bg-murcia-pastel/50 inline-block px-2 py-0.5 border border-murcia-red/20">15s de espera</span>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" id="courtesyToggle" class="toggle-checkbox">
@@ -294,8 +292,6 @@
                 </div>
                 
                 <div class="text-center font-mono text-xs uppercase opacity-60 mt-4">
-                    Fuente de audio: <span class="font-bold">repo/audio/alarma.mp3</span>
-                    <br>
                     <button onclick="testAudio()" class="mt-2 font-display text-sm tracking-widest text-murcia-red border-b-2 border-murcia-red hover:bg-murcia-red hover:text-white transition-colors">
                         <i class="ph-bold ph-play-circle mr-1"></i> PROBAR SONIDO (1 VEZ)
                     </button>
@@ -305,7 +301,7 @@
             </div>
 
             <div class="mt-auto pt-8 border-t-4 border-current opacity-40 text-center font-mono text-xs uppercase tracking-widest">
-                BP Murcia 2026<br>System Ready
+                BP Murcia 2026
             </div>
 
         </div>
