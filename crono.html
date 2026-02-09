@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer | BP Murcia 2026</title>
+    <link rel="icon" href="img/BPMurcia2026.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['"Archivo Black"', 'sans-serif'],
+                        'body': ['"Space Grotesk"', 'sans-serif'],
+                    },
+                    colors: {
+                        'murcia-red': '#D9291C',      
+                        'murcia-dark': '#0f0f0f',
+                        'murcia-pastel': '#FCE7E7', 
+                        'paper': '#f8f8f8',
+                    },
+                    animation: {
+                        'marquee': 'marquee 30s linear infinite',
+                        'flash-alarm': 'flash 0.5s infinite',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        },
+                        flash: {
+                            '0%, 100%': { backgroundColor: '#D9291C', color: '#ffffff' },
+                            '50%': { backgroundColor: '#0f0f0f', color: '#D9291C' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { 
+            background-color: #f8f8f8; 
+            color: #0f0f0f;
+            overflow-x: hidden; 
+            user-select: none; /* Para evitar selección al pulsar rápido */
+        }
+        
+        * { border-radius: 0 !important; }
+
+        .text-stroke { -webkit-text-stroke: 2px #0f0f0f; color: transparent; }
+        .text-stroke-white { -webkit-text-stroke: 2px #ffffff; color: transparent; }
+        
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Botones estilo Teclado */
+        .btn-numpad {
+            background: white;
+            border: 4px solid #0f0f0f;
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 2rem;
+            color: #0f0f0f;
+            transition: all 0.1s;
+            box-shadow: 6px 6px 0px 0px #0f0f0f;
+        }
+        .btn-numpad:active {
+            transform: translate(4px, 4px);
+            box-shadow: 2px 2px 0px 0px #0f0f0f;
+            background-color: #FCE7E7;
+        }
+
+        .btn-action {
+            font-family: 'Archivo Black', sans-serif;
+            text-transform: uppercase;
+            border: 4px solid #0f0f0f;
+            transition: all 0.1s;
+            box-shadow: 8px 8px 0px 0px #0f0f0f;
+        }
+        .btn-action:active {
+            transform: translate(4px, 4px);
+            box-shadow: 2px 2px 0px 0px #0f0f0f;
+        }
+        
+        .digit-box { font-variant-numeric: tabular-nums; }
+
+        /* Estado de Alarma */
+        .alarm-state {
+            animation: flash-alarm 0.5s infinite;
+        }
+        .alarm-state .text-stroke, .alarm-state .text-murcia-red {
+            -webkit-text-stroke: 0;
+            color: inherit !important;
+        }
+    </style>
+</head>
+<body id="mainBody" class="font-body min-h-screen flex flex-col relative">
+
+    <div class="noise-overlay"></div>
+
+    <div class="bg-murcia-dark py-3 overflow-hidden border-b-4 border-murcia-dark relative z-10 w-full shrink-0">
+        <div class="flex animate-marquee whitespace-nowrap">
+            <span class="text-white font-display text-lg mx-6 uppercase tracking-widest">• Cuenta Regresiva •</span>
+            <span class="text-murcia-red font-display text-lg mx-6 uppercase tracking-widest">Configurar Tiempo</span>
+            <span class="text-stroke-white font-display text-lg mx-6 uppercase tracking-widest">BP Murcia 2026</span>
+            <span class="text-white font-display text-lg mx-6 uppercase tracking-widest">• Cuenta Regresiva •</span>
+            <span class="text-murcia-red font-display text-lg mx-6 uppercase tracking-widest">Configurar Tiempo</span>
+            <span class="text-stroke-white font-display text-lg mx-6 uppercase tracking-widest">BP Murcia 2026</span>
+            <span class="text-white font-display text-lg mx-6 uppercase tracking-widest">• Cuenta Regresiva •</span>
+            <span class="text-murcia-red font-display text-lg mx-6 uppercase tracking-widest">Configurar Tiempo</span>
+        </div>
+    </div>
+
+    <main class="flex-grow flex flex-col items-center justify-center p-4 z-10 relative w-full max-w-7xl mx-auto">
+        
+        <div class="w-full text-center mb-8 relative">
+            <div class="inline-block relative">
+                <div class="absolute inset-0 bg-murcia-red translate-x-4 translate-y-4 -z-10 border-4 border-murcia-dark hidden md:block"></div>
+                
+                <div class="bg-white border-4 border-murcia-dark p-6 md:p-12">
+                     <h1 id="display" class="font-display text-[15vw] md:text-[10rem] leading-none tracking-tight text-murcia-dark digit-box">
+                        <span id="hVal">00</span><span class="text-murcia-red">:</span><span id="mVal">00</span><span class="text-murcia-red">:</span><span id="sVal">00</span>
+                    </h1>
+                </div>
+            </div>
+            <p id="instructionText" class="font-mono text-sm md:text-base text-gray-500 uppercase tracking-widest mt-4">
+                Introduce el tiempo (Ej: 130 = 1 min 30 seg)
+            </p>
+        </div>
+
+        <div id="setupPanel" class="w-full max-w-md">
+            <div class="grid grid-cols-3 gap-4">
+                <button onclick="addNumber(1)" class="btn-numpad py-4">1</button>
+                <button onclick="addNumber(2)" class="btn-numpad py-4">2</button>
+                <button onclick="addNumber(3)" class="btn-numpad py-4">3</button>
+                
+                <button onclick="addNumber(4)" class="btn-numpad py-4">4</button>
+                <button onclick="addNumber(5)" class="btn-numpad py-4">5</button>
+                <button onclick="addNumber(6)" class="btn-numpad py-4">6</button>
+                
+                <button onclick="addNumber(7)" class="btn-numpad py-4">7</button>
+                <button onclick="addNumber(8)" class="btn-numpad py-4">8</button>
+                <button onclick="addNumber(9)" class="btn-numpad py-4">9</button>
+                
+                <button onclick="clearInput()" class="btn-numpad py-4 bg-gray-200 text-base font-bold tracking-widest uppercase text-murcia-red">Clear</button>
+                <button onclick="addNumber(0)" class="btn-numpad py-4">0</button>
+                <button onclick="setTimer()" class="btn-numpad py-4 bg-murcia-dark text-white border-murcia-dark text-base font-bold tracking-widest uppercase hover:bg-murcia-red">SET</button>
+            </div>
+        </div>
+
+        <div id="timerControls" class="w-full max-w-2xl hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <button id="startStopBtn" class="btn-action bg-green-600 text-white text-3xl py-6 flex items-center justify-center gap-3">
+                <i class="ph-fill ph-play" id="playIcon"></i>
+                <span id="btnText">Start</span>
+            </button>
+
+            <button onclick="resetTimer()" class="btn-action bg-white text-murcia-dark text-3xl py-6 flex items-center justify-center gap-3 hover:bg-murcia-pastel">
+                <i class="ph-bold ph-arrow-counter-clockwise"></i>
+                <span>Reset</span>
+            </button>
+
+        </div>
+
+        <div class="mt-12">
+            <a href="2026.html" class="font-display text-murcia-dark uppercase hover:text-murcia-red border-b-2 border-murcia-dark hover:border-murcia-red transition-colors">
+                ← Volver al Menú
+            </a>
+        </div>
+
+    </main>
+
+    <script>
+        // VARIABLES GLOBALES
+        let inputBuffer = ""; // Almacena "130"
+        let totalSeconds = 0;
+        let timerInterval;
+        let isRunning = false;
+        let isPaused = false;
+        
+        // ELEMENTOS DOM
+        const display = document.getElementById('display');
+        const hVal = document.getElementById('hVal');
+        const mVal = document.getElementById('mVal');
+        const sVal = document.getElementById('sVal');
+        
+        const setupPanel = document.getElementById('setupPanel');
+        const timerControls = document.getElementById('timerControls');
+        const instructionText = document.getElementById('instructionText');
+        
+        const startStopBtn = document.getElementById('startStopBtn');
+        const btnText = document.getElementById('btnText');
+        const playIcon = document.getElementById('playIcon');
+        const mainBody = document.getElementById('mainBody');
+
+        // --- LÓGICA DE INPUT (SETUP) ---
+
+        function updateDisplayFromBuffer() {
+            // Rellenamos con ceros a la izquierda hasta tener 6 dígitos (HHMMSS)
+            let padded = inputBuffer.padStart(6, '0');
+            
+            let h = padded.slice(0, 2);
+            let m = padded.slice(2, 4);
+            let s = padded.slice(4, 6);
+            
+            hVal.innerText = h;
+            mVal.innerText = m;
+            sVal.innerText = s;
+        }
+
+        function addNumber(num) {
+            if (inputBuffer.length < 6) { // Máximo HHMMSS
+                // Si es el primer número y es 0, ignorar a menos que sea seguido de otros
+                if (inputBuffer === "" && num === 0) return;
+                inputBuffer += num;
+                updateDisplayFromBuffer();
+            }
+        }
+
+        function clearInput() {
+            inputBuffer = "";
+            hVal.innerText = "00";
+            mVal.innerText = "00";
+            sVal.innerText = "00";
+        }
+
+        function setTimer() {
+            if (inputBuffer === "") return;
+
+            // Convertir buffer a segundos reales
+            let padded = inputBuffer.padStart(6, '0');
+            let h = parseInt(padded.slice(0, 2));
+            let m = parseInt(padded.slice(2, 4));
+            let s = parseInt(padded.slice(4, 6));
+
+            totalSeconds = (h * 3600) + (m * 60) + s;
+
+            if (totalSeconds > 0) {
+                // Cambiar UI
+                setupPanel.classList.add('hidden');
+                instructionText.classList.add('hidden');
+                timerControls.classList.remove('hidden');
+                timerControls.classList.add('grid'); // Restaurar grid
+            }
+        }
+
+        // --- LÓGICA DEL CRONÓMETRO ---
+
+        function formatSeconds(sec) {
+            let h = Math.floor(sec / 3600);
+            let m = Math.floor((sec % 3600) / 60);
+            let s = Math.floor(sec % 60);
+
+            return {
+                h: h.toString().padStart(2, '0'),
+                m: m.toString().padStart(2, '0'),
+                s: s.toString().padStart(2, '0')
+            };
+        }
+
+        function updateTimerDisplay() {
+            const time = formatSeconds(totalSeconds);
+            hVal.innerText = time.h;
+            mVal.innerText = time.m;
+            sVal.innerText = time.s;
+        }
+
+        function alarm() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            mainBody.classList.add('alarm-state'); // Activar flash rojo/negro
+            hVal.innerText = "00";
+            mVal.innerText = "00";
+            sVal.innerText = "00";
+            
+            // Ocultar botón stop, solo dejar reset
+            startStopBtn.style.display = 'none';
+        }
+
+        function start() {
+            if (totalSeconds <= 0) return;
+
+            isRunning = true;
+            isPaused = false;
+            
+            // UI Update
+            btnText.innerText = "Pause";
+            playIcon.classList.replace('ph-play', 'ph-pause');
+            startStopBtn.classList.replace('bg-green-600', 'bg-murcia-dark'); // Estilo pausa
+            startStopBtn.classList.replace('text-white', 'text-white'); // Mantener contraste
+
+            timerInterval = setInterval(() => {
+                totalSeconds--;
+                updateTimerDisplay();
+
+                if (totalSeconds <= 0) {
+                    alarm();
+                }
+            }, 1000);
+        }
+
+        function pause() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            isPaused = true;
+
+            // UI Update
+            btnText.innerText = "Resume";
+            playIcon.classList.replace('ph-pause', 'ph-play');
+            startStopBtn.classList.replace('bg-murcia-dark', 'bg-green-600');
+        }
+
+        startStopBtn.addEventListener('click', () => {
+            if (isRunning) {
+                pause();
+            } else {
+                start();
+            }
+        });
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            isPaused = false;
+            inputBuffer = "";
+            totalSeconds = 0;
+
+            // Reset UI completa
+            mainBody.classList.remove('alarm-state');
+            startStopBtn.style.display = 'flex'; // Restaurar si se ocultó por alarma
+            
+            // Volver a estado Start
+            btnText.innerText = "Start";
+            playIcon.classList.replace('ph-pause', 'ph-play');
+            startStopBtn.classList.replace('bg-murcia-dark', 'bg-green-600');
+
+            // Volver a pantalla de setup
+            timerControls.classList.add('hidden');
+            timerControls.classList.remove('grid');
+            setupPanel.classList.remove('hidden');
+            instructionText.classList.remove('hidden');
+            
+            clearInput(); // Poner 00:00:00
+        }
+
+    </script>
+</body>
+</html>
