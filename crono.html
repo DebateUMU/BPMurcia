@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timer | BP Murcia 2026</title>
+    <title>Timer Pro | BP Murcia 2026</title>
     <link rel="icon" href="img/BPMurcia2026.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,6 +15,7 @@
 
     <script>
         tailwind.config = {
+            darkMode: 'class', // Activado manualmente con clase 'dark'
             theme: {
                 extend: {
                     fontFamily: {
@@ -28,14 +29,10 @@
                         'paper': '#f8f8f8',
                     },
                     animation: {
-                        'marquee': 'marquee 30s linear infinite',
                         'flash-alarm': 'flash 0.5s infinite',
+                        'pulse-courtesy': 'pulse 1s infinite',
                     },
                     keyframes: {
-                        marquee: {
-                            '0%': { transform: 'translateX(0%)' },
-                            '100%': { transform: 'translateX(-100%)' },
-                        },
                         flash: {
                             '0%, 100%': { backgroundColor: '#D9291C', color: '#ffffff' },
                             '50%': { backgroundColor: '#0f0f0f', color: '#D9291C' },
@@ -48,16 +45,14 @@
 
     <style>
         body { 
-            background-color: #f8f8f8; 
-            color: #0f0f0f;
             overflow-x: hidden; 
-            user-select: none; /* Para evitar selección al pulsar rápido */
+            user-select: none;
+            transition: background-color 0.3s, color 0.3s;
         }
         
         * { border-radius: 0 !important; }
 
-        .text-stroke { -webkit-text-stroke: 2px #0f0f0f; color: transparent; }
-        .text-stroke-white { -webkit-text-stroke: 2px #ffffff; color: transparent; }
+        .text-stroke { -webkit-text-stroke: 2px currentColor; color: transparent; }
         
         .noise-overlay {
             position: fixed;
@@ -68,163 +63,299 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* Botones estilo Teclado */
+        /* Estilos Brutalistas */
+        .btn-brutal-shadow {
+            border: 4px solid currentColor;
+            box-shadow: 6px 6px 0px 0px currentColor;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+        .btn-brutal-shadow:active {
+            transform: translate(4px, 4px);
+            box-shadow: 2px 2px 0px 0px currentColor;
+        }
+
         .btn-numpad {
-            background: white;
-            border: 4px solid #0f0f0f;
             font-family: 'Archivo Black', sans-serif;
             font-size: 2rem;
-            color: #0f0f0f;
-            transition: all 0.1s;
-            box-shadow: 6px 6px 0px 0px #0f0f0f;
-        }
-        .btn-numpad:active {
-            transform: translate(4px, 4px);
-            box-shadow: 2px 2px 0px 0px #0f0f0f;
-            background-color: #FCE7E7;
         }
 
-        .btn-action {
-            font-family: 'Archivo Black', sans-serif;
-            text-transform: uppercase;
-            border: 4px solid #0f0f0f;
-            transition: all 0.1s;
-            box-shadow: 8px 8px 0px 0px #0f0f0f;
-        }
-        .btn-action:active {
-            transform: translate(4px, 4px);
-            box-shadow: 2px 2px 0px 0px #0f0f0f;
-        }
-        
         .digit-box { font-variant-numeric: tabular-nums; }
 
-        /* Estado de Alarma */
+        /* Estado de Alarma Visual */
         .alarm-state {
             animation: flash-alarm 0.5s infinite;
         }
-        .alarm-state .text-stroke, .alarm-state .text-murcia-red {
-            -webkit-text-stroke: 0;
-            color: inherit !important;
+        .alarm-state * { animation: none !important; } /* Parar animaciones internas */
+        
+        /* Toggle Switch Brutalista */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #D9291C;
         }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #D9291C;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #D9291C; }
     </style>
 </head>
-<body id="mainBody" class="font-body min-h-screen flex flex-col relative">
+<body id="mainBody" class="font-body min-h-screen flex flex-col relative bg-paper text-murcia-dark dark:bg-murcia-dark dark:text-paper transition-colors duration-300">
 
-    <div class="noise-overlay"></div>
+    <div class="noise-overlay z-0"></div>
 
-    <div class="bg-murcia-dark py-3 overflow-hidden border-b-4 border-murcia-dark relative z-10 w-full shrink-0">
-        <div class="flex animate-marquee whitespace-nowrap">
-            <span class="text-white font-display text-lg mx-6 uppercase tracking-widest">• Cuenta Regresiva •</span>
-            <span class="text-murcia-red font-display text-lg mx-6 uppercase tracking-widest">Configurar Tiempo</span>
-            <span class="text-stroke-white font-display text-lg mx-6 uppercase tracking-widest">BP Murcia 2026</span>
-            <span class="text-white font-display text-lg mx-6 uppercase tracking-widest">• Cuenta Regresiva •</span>
-            <span class="text-murcia-red font-display text-lg mx-6 uppercase tracking-widest">Configurar Tiempo</span>
-            <span class="text-stroke-white font-display text-lg mx-6 uppercase tracking-widest">BP Murcia 2026</span>
-            <span class="text-white font-display text-lg mx-6 uppercase tracking-widest">• Cuenta Regresiva •</span>
-            <span class="text-murcia-red font-display text-lg mx-6 uppercase tracking-widest">Configurar Tiempo</span>
-        </div>
-    </div>
+    <header class="flex justify-between items-center p-4 md:p-6 border-b-4 border-murcia-dark dark:border-paper bg-white dark:bg-murcia-dark z-20 relative shrink-0 transition-colors duration-300">
+        <img src="img/BPMurcia2026.png" alt="BP Murcia Logo" class="h-10 md:h-14 drop-shadow-[2px_2px_0_rgba(0,0,0,1)] dark:drop-shadow-[2px_2px_0_rgba(255,255,255,1)] dark:invert">
+        
+        <button id="menuToggleBtn" class="text-3xl md:text-4xl hover:text-murcia-red transition-colors">
+            <i class="ph-bold ph-list"></i>
+        </button>
+    </header>
 
     <main class="flex-grow flex flex-col items-center justify-center p-4 z-10 relative w-full max-w-7xl mx-auto">
         
-        <div class="w-full text-center mb-8 relative">
+        <div class="w-full text-center mb-8 relative mt-4">
             <div class="inline-block relative">
-                <div class="absolute inset-0 bg-murcia-red translate-x-4 translate-y-4 -z-10 border-4 border-murcia-dark hidden md:block"></div>
+                 <div class="absolute inset-0 bg-murcia-red translate-x-4 translate-y-4 -z-10 border-4 border-murcia-dark dark:border-paper hidden md:block transition-colors"></div>
                 
-                <div class="bg-white border-4 border-murcia-dark p-6 md:p-12">
-                     <h1 id="display" class="font-display text-[15vw] md:text-[10rem] leading-none tracking-tight text-murcia-dark digit-box">
+                <div class="bg-white dark:bg-black border-4 border-murcia-dark dark:border-paper p-6 md:p-12 transition-colors duration-300 relative overflow-hidden">
+                     
+                     <div id="courtesyIndicator" class="hidden absolute top-0 left-0 w-full bg-murcia-red text-white font-mono text-xs md:text-sm uppercase tracking-[0.3em] py-1 animate-pulse">
+                        Tiempo de Cortesía (+15s)
+                     </div>
+
+                     <h1 id="display" class="font-display text-[15vw] md:text-[10rem] leading-none tracking-tight digit-box">
                         <span id="hVal">00</span><span class="text-murcia-red">:</span><span id="mVal">00</span><span class="text-murcia-red">:</span><span id="sVal">00</span>
                     </h1>
                 </div>
             </div>
-            <p id="instructionText" class="font-mono text-sm md:text-base text-gray-500 uppercase tracking-widest mt-4">
-                Introduce el tiempo (Ej: 130 = 1 min 30 seg)
+            <p id="instructionText" class="font-mono text-sm md:text-base opacity-60 uppercase tracking-widest mt-4">
+                Introduce el tiempo (Ej: 700 = 7 min)
             </p>
         </div>
 
-        <div id="setupPanel" class="w-full max-w-md">
+        <div id="setupPanel" class="w-full max-w-md mb-12">
             <div class="grid grid-cols-3 gap-4">
-                <button onclick="addNumber(1)" class="btn-numpad py-4">1</button>
-                <button onclick="addNumber(2)" class="btn-numpad py-4">2</button>
-                <button onclick="addNumber(3)" class="btn-numpad py-4">3</button>
+                <button onclick="addNumber(1)" class="btn-numpad btn-brutal-shadow py-4 bg-white dark:bg-gray-800">1</button>
+                <button onclick="addNumber(2)" class="btn-numpad btn-brutal-shadow py-4 bg-white dark:bg-gray-800">2</button>
+                <button onclick="addNumber(3)" class="btn-numpad btn-brutal-shadow py-4 bg-white dark:bg-gray-800">3</button>
                 
-                <button onclick="addNumber(4)" class="btn-numpad py-4">4</button>
-                <button onclick="addNumber(5)" class="btn-numpad py-4">5</button>
-                <button onclick="addNumber(6)" class="btn-numpad py-4">6</button>
+                <button onclick="addNumber(4)" class="btn-numpad btn-brutal-shadow py-4 bg-white dark:bg-gray-800">4</button>
+                <button onclick="addNumber(5)" class="btn-numpad btn-brutal-shadow py-4 bg-white dark:bg-gray-800">5</button>
+                <button onclick="addNumber(6)" class="btn-numpad btn-brutal-shadow py-4 bg-white dark:bg-gray-800">6</button>
                 
-                <button onclick="addNumber(7)" class="btn-numpad py-4">7</button>
-                <button onclick="addNumber(8)" class="btn-numpad py-4">8</button>
-                <button onclick="addNumber(9)" class="btn-numpad py-4">9</button>
+                <button onclick="addNumber(7)" class="btn-numpad btn-brutal-shadow py-4 bg-white dark:bg-gray-800">7</button>
+                <button onclick="addNumber(8)" class="btn-numpad btn-brutal-shadow py-4 bg-white dark:bg-gray-800">8</button>
+                <button onclick="addNumber(9)" class="btn-numpad btn-brutal-shadow py-4 bg-white dark:bg-gray-800">9</button>
                 
-                <button onclick="clearInput()" class="btn-numpad py-4 bg-gray-200 text-base font-bold tracking-widest uppercase text-murcia-red">Clear</button>
-                <button onclick="addNumber(0)" class="btn-numpad py-4">0</button>
-                <button onclick="setTimer()" class="btn-numpad py-4 bg-murcia-dark text-white border-murcia-dark text-base font-bold tracking-widest uppercase hover:bg-murcia-red">SET</button>
+                <button onclick="clearInput()" class="btn-numpad btn-brutal-shadow py-4 bg-gray-200 dark:bg-gray-700 text-base font-bold tracking-widest uppercase text-murcia-red">Clear</button>
+                <button onclick="addNumber(0)" class="btn-numpad btn-brutal-shadow py-4 bg-white dark:bg-gray-800">0</button>
+                <button onclick="setTimer()" class="btn-numpad btn-brutal-shadow py-4 bg-murcia-dark dark:bg-paper text-white dark:text-murcia-dark text-base font-bold tracking-widest uppercase hover:bg-murcia-red dark:hover:bg-murcia-red dark:hover:text-white transition-colors">SET</button>
             </div>
         </div>
 
-        <div id="timerControls" class="w-full max-w-2xl hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div id="timerControls" class="w-full max-w-2xl hidden grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
             
-            <button id="startStopBtn" class="btn-action bg-green-600 text-white text-3xl py-6 flex items-center justify-center gap-3">
+            <button id="startStopBtn" class="btn-brutal-shadow bg-green-600 text-white dark:border-paper font-display uppercase text-3xl py-6 flex items-center justify-center gap-3 hover:bg-green-500">
                 <i class="ph-fill ph-play" id="playIcon"></i>
                 <span id="btnText">Start</span>
             </button>
 
-            <button onclick="resetTimer()" class="btn-action bg-white text-murcia-dark text-3xl py-6 flex items-center justify-center gap-3 hover:bg-murcia-pastel">
+            <button onclick="resetTimer()" class="btn-brutal-shadow bg-white dark:bg-gray-800 text-current dark:border-paper font-display uppercase text-3xl py-6 flex items-center justify-center gap-3 hover:text-murcia-red">
                 <i class="ph-bold ph-arrow-counter-clockwise"></i>
                 <span>Reset</span>
             </button>
 
         </div>
 
-        <div class="mt-12">
-            <a href="2026.html" class="font-display text-murcia-dark uppercase hover:text-murcia-red border-b-2 border-murcia-dark hover:border-murcia-red transition-colors">
-                ← Volver al Menú
+         <div>
+            <a href="2026.html" class="font-display uppercase hover:text-murcia-red border-b-2 border-current hover:border-murcia-red transition-colors inline-flex items-center gap-2">
+                <i class="ph-bold ph-arrow-left"></i> Volver al Inicio
             </a>
         </div>
 
     </main>
 
+    <div id="optionsModal" class="fixed inset-0 bg-black/80 z-50 hidden flex justify-end transition-opacity duration-300 backdrop-blur-sm">
+        
+        <div class="bg-paper dark:bg-murcia-dark text-murcia-dark dark:text-paper w-full md:w-[450px] h-full border-l-4 border-murcia-dark dark:border-paper p-8 flex flex-col shadow-[-10px_0_0_0_rgba(217,41,28,1)] overflow-y-auto">
+            
+            <div class="flex justify-between items-center mb-10 border-b-4 border-current pb-4">
+                <h2 class="font-display text-3xl uppercase tracking-wider">Ajustes</h2>
+                <button id="menuCloseBtn" class="text-3xl hover:text-murcia-red transition-transform hover:rotate-90">
+                    <i class="ph-bold ph-x"></i>
+                </button>
+            </div>
+
+            <div class="mb-10">
+                <h3 class="font-display text-lg mb-4 uppercase opacity-50 border-b-2 border-dashed border-current pb-1">Apariencia</h3>
+                
+                <div class="flex justify-between items-center mb-4">
+                    <div class="flex flex-col">
+                        <span class="font-display text-xl uppercase">Modo Oscuro</span>
+                        <span class="font-mono text-xs opacity-60">Interfaz nocturna</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="darkModeToggle" class="sr-only peer">
+                        <div class="w-14 h-8 bg-gray-300 peer-focus:outline-none border-4 border-current peer-checked:bg-murcia-dark dark:peer-checked:bg-white transition-colors"></div>
+                        <div class="absolute left-1 top-1 bg-murcia-dark w-4 h-4 border-2 border-transparent peer-checked:translate-x-6 peer-checked:bg-murcia-red transition-transform"></div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="mb-10">
+                <h3 class="font-display text-lg mb-4 uppercase opacity-50 border-b-2 border-dashed border-current pb-1">Sonido & Alarma</h3>
+
+                <div class="flex justify-between items-center mb-6">
+                    <div class="flex flex-col">
+                        <span class="font-display text-xl uppercase">Silenciar</span>
+                        <span class="font-mono text-xs opacity-60">Desactivar audio final</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="muteToggle" class="sr-only peer">
+                        <div class="w-14 h-8 bg-gray-300 border-4 border-current transition-colors peer-checked:bg-murcia-red"></div>
+                        <div class="absolute left-1 top-1 bg-black w-4 h-4 border-2 border-transparent peer-checked:translate-x-6 peer-checked:bg-white transition-transform"></div>
+                    </label>
+                </div>
+
+                <div class="flex justify-between items-center mb-8">
+                    <div class="flex flex-col">
+                        <span class="font-display text-xl uppercase">Modo Cortesía</span>
+                        <span class="font-mono text-xs opacity-60 text-murcia-red font-bold">1s Sonido + 15s Espera</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="courtesyToggle" class="sr-only peer">
+                        <div class="w-14 h-8 bg-gray-300 border-4 border-current transition-colors peer-checked:bg-murcia-red"></div>
+                        <div class="absolute left-1 top-1 bg-black w-4 h-4 border-2 border-transparent peer-checked:translate-x-6 peer-checked:bg-white transition-transform"></div>
+                    </label>
+                </div>
+
+                <div class="border-4 border-current p-4 bg-white/5">
+                    <p class="font-display text-sm uppercase mb-3">Archivo de Audio</p>
+                    <input type="file" id="audioInput" accept="audio/*" class="hidden">
+                    <label for="audioInput" id="audioLabel" class="block w-full border-2 border-dashed border-current p-4 text-center cursor-pointer hover:bg-white/10 transition-colors">
+                        <i class="ph-bold ph-upload-simple text-2xl mb-2"></i>
+                        <span id="fileNameDisplay" class="block font-mono text-xs truncate">Click para subir MP3/WAV</span>
+                    </label>
+                    
+                    <div class="flex gap-2 mt-3">
+                         <button onclick="testAudio()" class="flex-1 bg-murcia-dark dark:bg-paper text-white dark:text-murcia-dark font-mono text-xs uppercase py-2 hover:opacity-80">Probar</button>
+                         <button onclick="stopTestAudio()" class="flex-1 border-2 border-current font-mono text-xs uppercase py-2 hover:bg-murcia-red hover:text-white hover:border-murcia-red transition-colors">Stop</button>
+                    </div>
+                </div>
+                <audio id="alarmAudio" hidden loop></audio>
+            </div>
+
+            <div class="mt-auto pt-6 border-t-4 border-current opacity-50 text-center font-mono text-xs uppercase">
+                BP Murcia 2026 • Timer System
+            </div>
+
+        </div>
+    </div>
+
+
     <script>
-        // VARIABLES GLOBALES
-        let inputBuffer = ""; // Almacena "130"
+        // --- GESTIÓN DE UI & OPCIONES ---
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const menuCloseBtn = document.getElementById('menuCloseBtn');
+        const optionsModal = document.getElementById('optionsModal');
+        const htmlElement = document.documentElement;
+        
+        // Toggles
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const muteToggle = document.getElementById('muteToggle');
+        const courtesyToggle = document.getElementById('courtesyToggle');
+        const courtesyIndicator = document.getElementById('courtesyIndicator');
+
+        // Audio
+        const audioInput = document.getElementById('audioInput');
+        const audioLabel = document.getElementById('audioLabel');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const alarmAudio = document.getElementById('alarmAudio');
+        
+        let audioLoaded = false;
+        let isMuted = false;
+        let isCourtesyMode = false;
+        let courtesyTimeout1;
+        let courtesyTimeout2;
+
+        // 1. ABRIR/CERRAR MENÚ
+        menuToggleBtn.addEventListener('click', () => optionsModal.classList.remove('hidden'));
+        menuCloseBtn.addEventListener('click', () => optionsModal.classList.add('hidden'));
+
+        // 2. MODO OSCURO
+        darkModeToggle.addEventListener('change', (e) => {
+            if(e.target.checked) {
+                htmlElement.classList.add('dark');
+            } else {
+                htmlElement.classList.remove('dark');
+            }
+        });
+
+        // 3. ACTUALIZAR ESTADOS
+        muteToggle.addEventListener('change', (e) => isMuted = e.target.checked);
+        courtesyToggle.addEventListener('change', (e) => isCourtesyMode = e.target.checked);
+
+        // 4. SUBIDA DE AUDIO
+        audioInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const fileURL = URL.createObjectURL(file);
+                alarmAudio.src = fileURL;
+                fileNameDisplay.textContent = file.name;
+                audioLabel.classList.add('border-solid', 'bg-green-100', 'dark:bg-green-900');
+                audioLabel.classList.remove('border-dashed');
+                audioLoaded = true;
+            }
+        });
+
+        function testAudio() {
+            if (audioLoaded && !isMuted) {
+                alarmAudio.currentTime = 0;
+                alarmAudio.play();
+            } else if (isMuted) {
+                alert("El modo silencio está activado.");
+            } else {
+                alert("Sube un archivo primero.");
+            }
+        }
+
+        function stopTestAudio() {
+            alarmAudio.pause();
+            alarmAudio.currentTime = 0;
+        }
+
+
+        // --- LÓGICA DEL CRONÓMETRO ---
+        let inputBuffer = "";
         let totalSeconds = 0;
         let timerInterval;
         let isRunning = false;
         let isPaused = false;
         
-        // ELEMENTOS DOM
-        const display = document.getElementById('display');
+        // Elementos DOM
         const hVal = document.getElementById('hVal');
         const mVal = document.getElementById('mVal');
         const sVal = document.getElementById('sVal');
-        
         const setupPanel = document.getElementById('setupPanel');
         const timerControls = document.getElementById('timerControls');
         const instructionText = document.getElementById('instructionText');
-        
         const startStopBtn = document.getElementById('startStopBtn');
         const btnText = document.getElementById('btnText');
         const playIcon = document.getElementById('playIcon');
         const mainBody = document.getElementById('mainBody');
 
-        // --- LÓGICA DE INPUT (SETUP) ---
-
         function updateDisplayFromBuffer() {
-            // Rellenamos con ceros a la izquierda hasta tener 6 dígitos (HHMMSS)
             let padded = inputBuffer.padStart(6, '0');
-            
-            let h = padded.slice(0, 2);
-            let m = padded.slice(2, 4);
-            let s = padded.slice(4, 6);
-            
-            hVal.innerText = h;
-            mVal.innerText = m;
-            sVal.innerText = s;
+            hVal.innerText = padded.slice(0, 2);
+            mVal.innerText = padded.slice(2, 4);
+            sVal.innerText = padded.slice(4, 6);
         }
 
         function addNumber(num) {
-            if (inputBuffer.length < 6) { // Máximo HHMMSS
-                // Si es el primer número y es 0, ignorar a menos que sea seguido de otros
+            if (inputBuffer.length < 6) {
                 if (inputBuffer === "" && num === 0) return;
                 inputBuffer += num;
                 updateDisplayFromBuffer();
@@ -233,130 +364,138 @@
 
         function clearInput() {
             inputBuffer = "";
-            hVal.innerText = "00";
-            mVal.innerText = "00";
-            sVal.innerText = "00";
+            hVal.innerText = "00"; mVal.innerText = "00"; sVal.innerText = "00";
         }
 
         function setTimer() {
             if (inputBuffer === "") return;
-
-            // Convertir buffer a segundos reales
             let padded = inputBuffer.padStart(6, '0');
-            let h = parseInt(padded.slice(0, 2));
-            let m = parseInt(padded.slice(2, 4));
-            let s = parseInt(padded.slice(4, 6));
-
-            totalSeconds = (h * 3600) + (m * 60) + s;
+            totalSeconds = (parseInt(padded.slice(0, 2)) * 3600) + (parseInt(padded.slice(2, 4)) * 60) + parseInt(padded.slice(4, 6));
 
             if (totalSeconds > 0) {
-                // Cambiar UI
                 setupPanel.classList.add('hidden');
                 instructionText.classList.add('hidden');
                 timerControls.classList.remove('hidden');
-                timerControls.classList.add('grid'); // Restaurar grid
+                timerControls.classList.add('grid');
             }
         }
-
-        // --- LÓGICA DEL CRONÓMETRO ---
 
         function formatSeconds(sec) {
             let h = Math.floor(sec / 3600);
             let m = Math.floor((sec % 3600) / 60);
             let s = Math.floor(sec % 60);
-
-            return {
-                h: h.toString().padStart(2, '0'),
-                m: m.toString().padStart(2, '0'),
-                s: s.toString().padStart(2, '0')
-            };
+            return { h: h.toString().padStart(2, '0'), m: m.toString().padStart(2, '0'), s: s.toString().padStart(2, '0') };
         }
 
         function updateTimerDisplay() {
             const time = formatSeconds(totalSeconds);
-            hVal.innerText = time.h;
-            mVal.innerText = time.m;
-            sVal.innerText = time.s;
+            hVal.innerText = time.h; mVal.innerText = time.m; sVal.innerText = time.s;
         }
 
-        function alarm() {
+        // --- SISTEMA DE ALARMA COMPLEJO ---
+        function playAlarmSound() {
+            if (audioLoaded && !isMuted) {
+                alarmAudio.currentTime = 0;
+                alarmAudio.play().catch(e => console.log("Autoplay bloqueado", e));
+            }
+        }
+
+        function triggerAlarm() {
             clearInterval(timerInterval);
             isRunning = false;
-            mainBody.classList.add('alarm-state'); // Activar flash rojo/negro
-            hVal.innerText = "00";
-            mVal.innerText = "00";
-            sVal.innerText = "00";
             
-            // Ocultar botón stop, solo dejar reset
-            startStopBtn.style.display = 'none';
+            // UI visual de Alarma
+            mainBody.classList.add('alarm-state');
+            startStopBtn.style.display = 'none'; // Ocultar boton start, forzar reset
+
+            // Lógica de Sonido
+            if (isCourtesyMode) {
+                // 1. Sonar
+                playAlarmSound();
+                
+                // 2. Parar al 1 segundo
+                courtesyTimeout1 = setTimeout(() => {
+                    alarmAudio.pause();
+                    alarmAudio.currentTime = 0;
+                    
+                    // Mostrar indicador visual de "Esperando"
+                    courtesyIndicator.classList.remove('hidden');
+                    // Parar parpadeo rojo de la web temporalmente
+                    mainBody.classList.remove('alarm-state');
+                }, 1000);
+
+                // 3. Volver a sonar a los 16 segundos (1s + 15s)
+                courtesyTimeout2 = setTimeout(() => {
+                    courtesyIndicator.classList.add('hidden');
+                    mainBody.classList.add('alarm-state'); // Volver a poner rojo
+                    if (audioLoaded && !isMuted) alarmAudio.play(); // Loop infinito ahora sí
+                }, 16000); // 1000 + 15000
+
+            } else {
+                // Modo Normal
+                playAlarmSound();
+            }
         }
 
         function start() {
             if (totalSeconds <= 0) return;
-
-            isRunning = true;
-            isPaused = false;
-            
-            // UI Update
+            isRunning = true; isPaused = false;
             btnText.innerText = "Pause";
             playIcon.classList.replace('ph-play', 'ph-pause');
-            startStopBtn.classList.replace('bg-green-600', 'bg-murcia-dark'); // Estilo pausa
-            startStopBtn.classList.replace('text-white', 'text-white'); // Mantener contraste
+            startStopBtn.classList.replace('bg-green-600', 'bg-murcia-dark');
+            startStopBtn.classList.replace('text-white', 'text-white'); // Fix estilo
+            startStopBtn.classList.add('dark:bg-paper', 'dark:text-murcia-dark'); // Dark mode fix
 
             timerInterval = setInterval(() => {
                 totalSeconds--;
                 updateTimerDisplay();
-
                 if (totalSeconds <= 0) {
-                    alarm();
+                    triggerAlarm();
                 }
             }, 1000);
         }
 
         function pause() {
             clearInterval(timerInterval);
-            isRunning = false;
-            isPaused = true;
-
-            // UI Update
+            isRunning = false; isPaused = true;
             btnText.innerText = "Resume";
             playIcon.classList.replace('ph-pause', 'ph-play');
             startStopBtn.classList.replace('bg-murcia-dark', 'bg-green-600');
+            startStopBtn.classList.remove('dark:bg-paper', 'dark:text-murcia-dark');
         }
 
-        startStopBtn.addEventListener('click', () => {
-            if (isRunning) {
-                pause();
-            } else {
-                start();
-            }
-        });
+        startStopBtn.addEventListener('click', () => isRunning ? pause() : start());
 
         function resetTimer() {
             clearInterval(timerInterval);
-            isRunning = false;
-            isPaused = false;
-            inputBuffer = "";
-            totalSeconds = 0;
-
-            // Reset UI completa
-            mainBody.classList.remove('alarm-state');
-            startStopBtn.style.display = 'flex'; // Restaurar si se ocultó por alarma
+            clearTimeout(courtesyTimeout1);
+            clearTimeout(courtesyTimeout2);
             
-            // Volver a estado Start
+            // Limpiar Audio y Estados
+            if (audioLoaded) {
+                alarmAudio.pause();
+                alarmAudio.currentTime = 0;
+            }
+            
+            mainBody.classList.remove('alarm-state');
+            courtesyIndicator.classList.add('hidden');
+            startStopBtn.style.display = 'flex';
+
+            // Reset UI Botones
+            isRunning = false; isPaused = false;
             btnText.innerText = "Start";
             playIcon.classList.replace('ph-pause', 'ph-play');
-            startStopBtn.classList.replace('bg-murcia-dark', 'bg-green-600');
+            
+            // Volver estilos originales start button
+            startStopBtn.className = "btn-brutal-shadow bg-green-600 text-white dark:border-paper font-display uppercase text-3xl py-6 flex items-center justify-center gap-3 hover:bg-green-500";
 
-            // Volver a pantalla de setup
+            inputBuffer = ""; totalSeconds = 0;
             timerControls.classList.add('hidden');
             timerControls.classList.remove('grid');
             setupPanel.classList.remove('hidden');
             instructionText.classList.remove('hidden');
-            
-            clearInput(); // Poner 00:00:00
+            clearInput();
         }
-
     </script>
 </body>
 </html>
