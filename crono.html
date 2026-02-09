@@ -77,8 +77,7 @@
             font-size: 2rem;
         }
 
-        /* --- TOGGLE SWITCH RECTANGULAR --- */
-        /* Ocultar el checkbox real */
+        /* --- TOGGLE SWITCH MEJORADO --- */
         .toggle-checkbox {
             position: absolute;
             opacity: 0;
@@ -87,57 +86,58 @@
             width: 0;
         }
         
-        /* Contenedor del switch (La pista) */
         .toggle-track {
             position: relative;
             display: inline-block;
-            width: 60px;
-            height: 32px;
-            background-color: #e5e7eb; /* Gris claro por defecto */
-            border: 4px solid #0f0f0f;
-            transition: background-color 0.2s;
+            width: 64px;
+            height: 36px;
+            background-color: #e0e0e0; /* Gris suave */
+            border: 3px solid #0f0f0f;
+            transition: all 0.3s ease;
         }
 
-        /* El cuadrado deslizante (Thumb) */
         .toggle-thumb {
             position: absolute;
-            top: 0;
-            left: 0;
-            height: 24px; /* altura pista (32) - 2*borde(4) = 24 interna... ajuste fino */
-            width: 24px;
+            top: 4px; /* Centrado vertical (36 height - 3 border*2 - 20 thumb = sobran espacio... ajustado a ojo) */
+            top: 50%;
+            transform: translateY(-50%);
+            left: 4px;
+            height: 22px; 
+            width: 22px;
             background-color: #0f0f0f;
-            transition: transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
-            /* Ajuste para centrarlo visualmente dentro del borde de 4px */
-            margin: -4px; /* Reset de margen si es necesario, o ajuste top/left */
-            top: 0; /* Coincide con el borde interno */
-            left: 0;
-            border: 4px solid transparent; /* Truco para sizing */
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            border: 2px solid transparent; /* Para el modo activo */
         }
         
-        /* Estado Checked */
+        /* Estado Activo (Checked) */
         .toggle-checkbox:checked + .toggle-track {
-            background-color: #D9291C; /* Rojo al activar */
+            background-color: #D9291C;
+            border-color: #0f0f0f;
         }
         
         .toggle-checkbox:checked + .toggle-track .toggle-thumb {
-            transform: translateX(28px); /* Desplazamiento a la derecha */
-            background-color: #ffffff; /* Blanco al activar */
-            border-color: #0f0f0f; /* Borde negro para contraste */
-            border-width: 4px;
-            border-style: solid;
+            left: calc(100% - 26px); /* Mover a la derecha */
+            background-color: #ffffff;
+            border-color: #0f0f0f;
         }
 
-        /* Estado Dark Mode para el track */
-        .dark .toggle-track {
-            border-color: #f8f8f8;
+        /* Dark Mode Ajustes */
+        .dark .toggle-track { 
+            background-color: #333; 
+            border-color: #f8f8f8; 
         }
-        .dark .toggle-thumb {
-            background-color: #f8f8f8;
+        .dark .toggle-thumb { 
+            background-color: #f8f8f8; 
+        }
+        .dark .toggle-checkbox:checked + .toggle-track {
+            background-color: #D9291C;
+            border-color: #f8f8f8;
         }
         .dark .toggle-checkbox:checked + .toggle-track .toggle-thumb {
             background-color: #0f0f0f;
             border-color: #f8f8f8;
         }
+
 
         .digit-box { font-variant-numeric: tabular-nums; }
         .alarm-state { animation: flash-alarm 0.5s infinite; }
@@ -154,15 +154,21 @@
 
     <header class="flex justify-between items-center p-6 border-b-4 border-murcia-dark dark:border-paper bg-white dark:bg-murcia-dark z-20 relative shrink-0 transition-colors duration-300">
         <div class="flex items-center gap-4">
-            <img src="img/BPMurcia2026.png" alt="BP Murcia Logo" class="h-12 drop-shadow-[4px_4px_0_rgba(0,0,0,1)] dark:drop-shadow-[2px_2px_0_rgba(255,255,255,1)] dark:invert transition-all hover:scale-105">
+            <img src="img/BPMurcia2026.png" alt="BP Murcia Logo" class="h-12 transition-all hover:scale-105">
             <div class="hidden md:block font-display text-xl uppercase tracking-wider leading-none">
                 BP Murcia<br><span class="text-murcia-red">Timer</span>
             </div>
         </div>
         
-        <button id="menuToggleBtn" class="text-4xl hover:text-murcia-red transition-colors active:scale-95">
-            <i class="ph-bold ph-list"></i>
-        </button>
+        <div class="flex items-center gap-6">
+            <button id="fullscreenBtn" onclick="toggleFullScreen()" class="text-3xl hover:text-murcia-red transition-colors active:scale-95" title="Pantalla Completa">
+                <i id="fsIcon" class="ph-bold ph-arrows-out"></i>
+            </button>
+            
+            <button id="menuToggleBtn" class="text-4xl hover:text-murcia-red transition-colors active:scale-95">
+                <i class="ph-bold ph-list"></i>
+            </button>
+        </div>
     </header>
 
     <main class="flex-grow flex flex-col items-center justify-center p-4 z-10 relative w-full max-w-7xl mx-auto">
@@ -243,7 +249,7 @@
                     <h3 class="font-display text-lg uppercase tracking-widest">Visual</h3>
                 </div>
                 
-                <div class="flex justify-between items-center p-4 border-4 border-current bg-white/5">
+                <div class="flex justify-between items-center p-4 border-4 border-current bg-white/5 hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
                     <div class="flex flex-col">
                         <span class="font-display text-xl uppercase">Modo Oscuro</span>
                     </div>
@@ -262,7 +268,7 @@
                     <h3 class="font-display text-lg uppercase tracking-widest">Audio & Alarma</h3>
                 </div>
 
-                <div class="flex justify-between items-center mb-6 p-4 border-4 border-current bg-white/5">
+                <div class="flex justify-between items-center mb-6 p-4 border-4 border-current bg-white/5 hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
                     <div class="flex flex-col">
                         <span class="font-display text-xl uppercase">Silenciar</span>
                     </div>
@@ -274,10 +280,10 @@
                     </label>
                 </div>
 
-                <div class="flex justify-between items-center mb-6 p-4 border-4 border-current bg-white/5">
+                <div class="flex justify-between items-center mb-6 p-4 border-4 border-current bg-white/5 hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
                     <div class="flex flex-col">
                         <span class="font-display text-xl uppercase">Modo Cortesía</span>
-                        <span class="font-mono text-xs text-murcia-red font-bold mt-1 bg-murcia-pastel/20 inline-block px-1">1s Sonido + 15s Espera</span>
+                        <span class="font-mono text-xs text-murcia-red font-bold mt-1 bg-murcia-pastel/50 inline-block px-2 py-0.5 border border-murcia-red/20">1s Sonido + 15s Espera</span>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" id="courtesyToggle" class="toggle-checkbox">
@@ -290,10 +296,12 @@
                 <div class="text-center font-mono text-xs uppercase opacity-60 mt-4">
                     Fuente de audio: <span class="font-bold">repo/audio/alarma.mp3</span>
                     <br>
-                    <button onclick="testAudio()" class="mt-2 underline hover:text-murcia-red">Probar Sonido</button>
+                    <button onclick="testAudio()" class="mt-2 font-display text-sm tracking-widest text-murcia-red border-b-2 border-murcia-red hover:bg-murcia-red hover:text-white transition-colors">
+                        <i class="ph-bold ph-play-circle mr-1"></i> PROBAR SONIDO (1 VEZ)
+                    </button>
                 </div>
                 
-                <audio id="alarmAudio" src="audio/alarma.mp3" preload="auto" loop></audio>
+                <audio id="alarmAudio" src="audio/alarma.mp3" preload="auto"></audio>
             </div>
 
             <div class="mt-auto pt-8 border-t-4 border-current opacity-40 text-center font-mono text-xs uppercase tracking-widest">
@@ -311,6 +319,10 @@
         const optionsModal = document.getElementById('optionsModal');
         const htmlElement = document.documentElement;
         
+        // Fullscreen
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const fsIcon = document.getElementById('fsIcon');
+
         // Toggles
         const darkModeToggle = document.getElementById('darkModeToggle');
         const muteToggle = document.getElementById('muteToggle');
@@ -340,15 +352,29 @@
             }
         });
 
-        // 3. ACTUALIZAR ESTADOS
+        // 3. PANTALLA COMPLETA
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+                fsIcon.classList.replace('ph-arrows-out', 'ph-arrows-in');
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                    fsIcon.classList.replace('ph-arrows-in', 'ph-arrows-out');
+                }
+            }
+        }
+
+        // 4. ACTUALIZAR ESTADOS
         muteToggle.addEventListener('change', (e) => isMuted = e.target.checked);
         courtesyToggle.addEventListener('change', (e) => isCourtesyMode = e.target.checked);
 
-        // Prueba de Audio
+        // Prueba de Audio (UNA SOLA VEZ)
         function testAudio() {
             if (!isMuted) {
                 alarmAudio.currentTime = 0;
-                alarmAudio.play().catch(e => alert("No se encontró el archivo 'audio/alarma.mp3' en el repositorio o el navegador bloqueó el autoplay."));
+                alarmAudio.loop = false; // Importante: Desactivar bucle para test
+                alarmAudio.play().catch(e => alert("No se encontró el archivo 'audio/alarma.mp3' o el navegador bloqueó el autoplay."));
             } else {
                 alert("El modo silencio está activado.");
             }
@@ -357,6 +383,7 @@
         // --- LÓGICA DEL CRONÓMETRO ---
         let inputBuffer = "";
         let totalSeconds = 0;
+        let initialSeconds = 0;
         let timerInterval;
         let isRunning = false;
         
@@ -395,6 +422,7 @@
             if (inputBuffer === "") return;
             let padded = inputBuffer.padStart(6, '0');
             totalSeconds = (parseInt(padded.slice(0, 2)) * 3600) + (parseInt(padded.slice(2, 4)) * 60) + parseInt(padded.slice(4, 6));
+            initialSeconds = totalSeconds;
 
             if (totalSeconds > 0) {
                 setupPanel.classList.add('hidden');
@@ -416,10 +444,11 @@
         }
 
         // --- SISTEMA DE ALARMA ---
-        function playAlarmSound() {
+        function playAlarmSound(loop = false) {
             if (!isMuted) {
                 alarmAudio.currentTime = 0;
-                alarmAudio.play().catch(e => console.log("Autoplay bloqueado o archivo no encontrado", e));
+                alarmAudio.loop = loop; // Control manual del bucle
+                alarmAudio.play().catch(e => console.log("Autoplay bloqueado", e));
             }
         }
 
@@ -432,8 +461,8 @@
             startStopBtn.style.display = 'none';
 
             if (isCourtesyMode) {
-                // 1. Sonar
-                playAlarmSound();
+                // 1. Sonar (SIN LOOP al inicio porque paramos al 1s)
+                playAlarmSound(true); // Loop true para que suene seguido el primer segundo
                 
                 // 2. Parar al 1 segundo e iniciar cuenta atrás de cortesía
                 courtesyTimeout1 = setTimeout(() => {
@@ -454,18 +483,18 @@
 
                 }, 1000);
 
-                // 3. Volver a sonar a los 16 segundos
+                // 3. Volver a sonar a los 16 segundos (CON LOOP)
                 courtesyTimeout2 = setTimeout(() => {
                     courtesyIndicator.classList.add('hidden');
                     clearInterval(courtesyInterval);
                     
                     mainBody.classList.add('alarm-state'); 
-                    if (!isMuted) alarmAudio.play();
+                    playAlarmSound(true); // Activar Loop indefinido
                 }, 16000); 
 
             } else {
-                // Modo Normal
-                playAlarmSound();
+                // Modo Normal (CON LOOP)
+                playAlarmSound(true);
             }
         }
 
@@ -506,6 +535,7 @@
             
             alarmAudio.pause();
             alarmAudio.currentTime = 0;
+            alarmAudio.loop = false;
             
             mainBody.classList.remove('alarm-state');
             courtesyIndicator.classList.add('hidden');
@@ -517,11 +547,9 @@
             
             startStopBtn.className = "btn-brutal bg-green-600 text-white dark:border-paper font-display uppercase text-3xl py-6 flex items-center justify-center gap-3 hover:bg-green-500 active:translate-y-1 active:shadow-none";
 
-            inputBuffer = ""; totalSeconds = 0;
-            timerControls.classList.add('hidden');
-            timerControls.classList.remove('grid');
-            setupPanel.classList.remove('hidden');
-            clearInput();
+            // RESET A TIEMPO INICIAL
+            totalSeconds = initialSeconds;
+            updateTimerDisplay();
         }
     </script>
 </body>
