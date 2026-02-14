@@ -30,7 +30,7 @@
                     },
                     animation: {
                         'flash-alarm': 'flash 0.5s infinite',
-                        'pulse-fast': 'pulse 0.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        // 'pulse-fast': 'pulse 0.5s cubic-bezier(0.4, 0, 0.6, 1) infinite', // Eliminada para evitar parpadeo
                     },
                     keyframes: {
                         flash: {
@@ -74,6 +74,18 @@
             transform: translate(4px, 4px);
             box-shadow: 2px 2px 0px 0px currentColor;
         }
+        
+        /* Estilo para el botón pequeño */
+        .btn-small {
+            border: 2px solid currentColor;
+            box-shadow: 3px 3px 0px 0px currentColor;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+        .btn-small:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px 0px currentColor;
+        }
+
         .btn-numpad {
             font-family: 'Archivo Black', sans-serif;
             font-size: 2rem;
@@ -103,7 +115,9 @@
     <div class="noise-overlay z-0"></div>
 
     <header class="flex justify-between items-center p-6 border-b-4 border-murcia-dark dark:border-paper bg-white dark:bg-murcia-dark z-20 relative shrink-0 transition-colors duration-300">
-        <div class="font-display text-2xl tracking-tighter select-none">BP MURCIA <span class="text-murcia-red">2026</span></div>
+        <a href="2026.html" class="w-32 md:w-48 block hover:opacity-80 transition-opacity">
+            <img src="img/BPMurcia2026.png" onerror="this.onerror=null; this.src='https://placehold.co/200x80/D9291C/FFFFFF?text=BP+MURCIA&font=roboto'" alt="Logo BP Murcia" class="w-full h-auto">
+        </a>
         
         <div class="flex items-center gap-6">
             <button id="fullscreenBtn" onclick="toggleFullScreen()" class="text-3xl hover:text-murcia-red transition-colors active:scale-95" title="Pantalla Completa">
@@ -119,10 +133,6 @@
         
         <div class="w-full relative flex flex-col items-center">
 
-            <button id="changeTimeBtn" onclick="changeTime()" class="hidden absolute top-0 left-0 md:-left-4 md:-top-4 btn-brutal px-4 py-2 bg-white dark:bg-gray-800 text-sm font-display uppercase tracking-wider hover:bg-murcia-pastel dark:hover:bg-gray-700 z-30 flex items-center gap-2">
-                <i class="ph-bold ph-pencil-simple"></i> Cambiar Tiempo
-            </button>
-
             <div class="w-full text-center mb-12 relative mt-12 group">
                 <div class="inline-block relative">
                     <div class="absolute inset-0 bg-murcia-red translate-x-4 translate-y-4 -z-10 border-4 border-murcia-dark dark:border-paper hidden md:block transition-transform group-hover:translate-x-6 group-hover:translate-y-6"></div>
@@ -135,7 +145,7 @@
                             <span id="hVal">00</span><span class="text-murcia-red pb-4 inline-block align-top text-[0.8em]">:</span><span id="mVal">00</span><span class="text-murcia-red pb-4 inline-block align-top text-[0.8em]">:</span><span id="sVal">00</span>
                         </h1>
 
-                        <div id="courtesyOverlay" class="hidden absolute inset-0 z-50 bg-murcia-red flex flex-col items-center justify-center animate-pulse-fast">
+                        <div id="courtesyOverlay" class="hidden absolute inset-0 z-50 bg-murcia-red flex flex-col items-center justify-center">
                             <div class="text-white font-display text-4xl md:text-6xl uppercase leading-none mb-2 tracking-widest">CORTESÍA</div>
                             <div id="courtesyBigCount" class="text-white font-display text-[8rem] md:text-[12rem] leading-none">15</div>
                         </div>
@@ -161,7 +171,7 @@
                 </div>
             </div>
 
-            <div id="timerControls" class="w-full max-w-2xl hidden grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            <div id="timerControls" class="w-full max-w-2xl hidden grid grid-cols-1 md:grid-cols-2 gap-6">
                 <button id="startStopBtn" onclick="toggleStartStop()" class="btn-brutal bg-green-600 text-white dark:border-paper font-display uppercase text-3xl py-6 flex items-center justify-center gap-3 hover:bg-green-500 active:translate-y-1 active:shadow-none transition-colors">
                     <i class="ph-fill ph-play" id="playIcon"></i>
                     <span id="btnText">Start</span>
@@ -172,6 +182,10 @@
                     <span>Reset</span>
                 </button>
             </div>
+
+            <button id="changeTimeBtn" onclick="changeTime()" class="hidden mt-8 btn-small px-6 py-2 bg-white dark:bg-gray-800 text-xs font-display uppercase tracking-widest hover:bg-murcia-pastel dark:hover:bg-gray-700 flex items-center gap-2 opacity-70 hover:opacity-100 transition-all">
+                <i class="ph-bold ph-pencil-simple"></i> Cambiar Tiempo
+            </button>
         </div>
 
     </main>
