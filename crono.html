@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Timer | BP Murcia 2026</title>
-    <link rel="icon" href="img/BPMurcia2026.png">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⏱️</text></svg>">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -91,14 +91,13 @@
             display: inline-block;
             width: 64px;
             height: 36px;
-            background-color: #e0e0e0; /* Gris suave */
+            background-color: #e0e0e0;
             border: 3px solid #0f0f0f;
             transition: all 0.3s ease;
         }
 
         .toggle-thumb {
             position: absolute;
-            top: 4px; /* Centrado vertical (36 height - 3 border*2 - 20 thumb = sobran espacio... ajustado a ojo) */
             top: 50%;
             transform: translateY(-50%);
             left: 4px;
@@ -106,7 +105,7 @@
             width: 22px;
             background-color: #0f0f0f;
             transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-            border: 2px solid transparent; /* Para el modo activo */
+            border: 2px solid transparent;
         }
         
         /* Estado Activo (Checked) */
@@ -116,7 +115,7 @@
         }
         
         .toggle-checkbox:checked + .toggle-track .toggle-thumb {
-            left: calc(100% - 26px); /* Mover a la derecha */
+            left: calc(100% - 26px);
             background-color: #ffffff;
             border-color: #0f0f0f;
         }
@@ -138,7 +137,6 @@
             border-color: #f8f8f8;
         }
 
-
         .digit-box { font-variant-numeric: tabular-nums; }
         .alarm-state { animation: flash-alarm 0.5s infinite; }
         .alarm-state * { animation: none !important; }
@@ -154,8 +152,7 @@
 
     <header class="flex justify-between items-center p-6 border-b-4 border-murcia-dark dark:border-paper bg-white dark:bg-murcia-dark z-20 relative shrink-0 transition-colors duration-300">
         <div class="flex items-center gap-4">
-            <img src="img/BPMurcia2026.png" alt="BP Murcia Logo" class="h-12 transition-all hover:scale-105">
-            
+            <div class="font-display text-2xl tracking-tighter">BP MURCIA <span class="text-murcia-red">2026</span></div>
         </div>
         
         <div class="flex items-center gap-6">
@@ -180,6 +177,8 @@
                      <div id="courtesyIndicator" class="hidden absolute top-0 left-0 w-full bg-murcia-red text-white font-mono text-sm md:text-xl uppercase font-bold tracking-[0.3em] py-3 border-b-4 border-murcia-dark">
                         CORTESÍA: <span id="courtesyCount">15</span>s
                      </div>
+
+                     <div id="modeLabel" class="hidden absolute top-2 right-4 font-mono text-xs text-murcia-red tracking-widest uppercase font-bold">CRONÓMETRO</div>
 
                      <h1 id="display" class="font-display text-[15vw] md:text-[11rem] leading-none tracking-tight digit-box select-none">
                         <span id="hVal">00</span><span class="text-murcia-red pb-4 inline-block align-top text-[0.8em]">:</span><span id="mVal">00</span><span class="text-murcia-red pb-4 inline-block align-top text-[0.8em]">:</span><span id="sVal">00</span>
@@ -210,7 +209,7 @@
 
         <div id="timerControls" class="w-full max-w-2xl hidden grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
             
-            <button id="startStopBtn" class="btn-brutal bg-green-600 text-white dark:border-paper font-display uppercase text-3xl py-6 flex items-center justify-center gap-3 hover:bg-green-500 active:translate-y-1 active:shadow-none">
+            <button id="startStopBtn" onclick="toggleStartStop()" class="btn-brutal bg-green-600 text-white dark:border-paper font-display uppercase text-3xl py-6 flex items-center justify-center gap-3 hover:bg-green-500 active:translate-y-1 active:shadow-none">
                 <i class="ph-fill ph-play" id="playIcon"></i>
                 <span id="btnText">Start</span>
             </button>
@@ -223,7 +222,7 @@
         </div>
 
          <div class="mt-8 opacity-70 hover:opacity-100 transition-opacity">
-            <a href="2026.html" class="font-display uppercase tracking-widest text-sm hover:text-murcia-red border-b-2 border-transparent hover:border-murcia-red transition-colors inline-flex items-center gap-2">
+            <a href="#" class="font-display uppercase tracking-widest text-sm hover:text-murcia-red border-b-2 border-transparent hover:border-murcia-red transition-colors inline-flex items-center gap-2">
                 <i class="ph-bold ph-arrow-left"></i> Volver al Inicio
             </a>
         </div>
@@ -239,6 +238,26 @@
                 <button id="menuCloseBtn" class="text-4xl hover:text-murcia-red transition-transform hover:rotate-90">
                     <i class="ph-bold ph-x"></i>
                 </button>
+            </div>
+
+            <div class="mb-12">
+                <div class="flex items-center gap-3 mb-6 opacity-50">
+                    <i class="ph-fill ph-gear-six text-2xl"></i>
+                    <h3 class="font-display text-lg uppercase tracking-widest">Modo</h3>
+                </div>
+
+                <div class="flex justify-between items-center p-4 border-4 border-current bg-white/5 hover:bg-black/5 dark:hover:bg-white/5 transition-colors mb-6">
+                    <div class="flex flex-col">
+                        <span class="font-display text-xl uppercase">Modo Cronómetro</span>
+                        <span class="font-mono text-xs opacity-60">Cuenta progresiva</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="stopwatchToggle" class="toggle-checkbox">
+                        <div class="toggle-track">
+                            <div class="toggle-thumb"></div>
+                        </div>
+                    </label>
+                </div>
             </div>
 
             <div class="mb-12">
@@ -293,7 +312,7 @@
                 
                 <div class="text-center font-mono text-xs uppercase opacity-60 mt-4">
                     <button onclick="testAudio()" class="mt-2 font-display text-sm tracking-widest text-murcia-red border-b-2 border-murcia-red hover:bg-murcia-red hover:text-white transition-colors">
-                        <i class="ph-bold ph-play-circle mr-1"></i> PROBAR SONIDO (1 VEZ)
+                        <i class="ph-bold ph-play-circle mr-1"></i> PROBAR SONIDO
                     </button>
                 </div>
                 
@@ -323,32 +342,73 @@
         const darkModeToggle = document.getElementById('darkModeToggle');
         const muteToggle = document.getElementById('muteToggle');
         const courtesyToggle = document.getElementById('courtesyToggle');
+        const stopwatchToggle = document.getElementById('stopwatchToggle'); // Nuevo
+        
+        // Elementos visuales
         const courtesyIndicator = document.getElementById('courtesyIndicator');
         const courtesyCountDisplay = document.getElementById('courtesyCount');
+        const modeLabel = document.getElementById('modeLabel');
 
         // Audio
         const alarmAudio = document.getElementById('alarmAudio');
         
+        // Variables Estado
         let isMuted = false;
         let isCourtesyMode = false;
-        let courtesyTimeout1;
-        let courtesyTimeout2;
-        let courtesyInterval;
+        let isStopwatchMode = false; // Nuevo: Controla si es cronómetro
+        let courtesyTimeout1, courtesyTimeout2, courtesyInterval;
+        let timerInterval;
+        let isRunning = false;
+        let inputBuffer = "";
+        let totalSeconds = 0;
+        let initialSeconds = 0;
 
-        // 1. ABRIR/CERRAR MENÚ
+        // Elementos Cronómetro
+        const hVal = document.getElementById('hVal');
+        const mVal = document.getElementById('mVal');
+        const sVal = document.getElementById('sVal');
+        const setupPanel = document.getElementById('setupPanel');
+        const timerControls = document.getElementById('timerControls');
+        const startStopBtn = document.getElementById('startStopBtn');
+        const btnText = document.getElementById('btnText');
+        const playIcon = document.getElementById('playIcon');
+        const mainBody = document.getElementById('mainBody');
+
+        // --- LISTENERS ---
+
         menuToggleBtn.addEventListener('click', () => optionsModal.classList.remove('hidden'));
         menuCloseBtn.addEventListener('click', () => optionsModal.classList.add('hidden'));
 
-        // 2. MODO OSCURO
         darkModeToggle.addEventListener('change', (e) => {
-            if(e.target.checked) {
-                htmlElement.classList.add('dark');
+            if(e.target.checked) htmlElement.classList.add('dark');
+            else htmlElement.classList.remove('dark');
+        });
+
+        muteToggle.addEventListener('change', (e) => isMuted = e.target.checked);
+        courtesyToggle.addEventListener('change', (e) => isCourtesyMode = e.target.checked);
+        
+        // Lógica Cambio de Modo
+        stopwatchToggle.addEventListener('change', (e) => {
+            isStopwatchMode = e.target.checked;
+            resetTimer(); // Resetear todo al cambiar
+            
+            if (isStopwatchMode) {
+                // Modo Cronómetro: Ocultar teclado, mostrar 00:00:00 y etiqueta
+                setupPanel.classList.add('hidden');
+                timerControls.classList.remove('hidden');
+                modeLabel.classList.remove('hidden');
+                totalSeconds = 0;
+                updateDisplay(0);
             } else {
-                htmlElement.classList.remove('dark');
+                // Modo Timer: Mostrar teclado, ocultar controles hasta SET
+                setupPanel.classList.remove('hidden');
+                timerControls.classList.add('hidden');
+                modeLabel.classList.add('hidden');
+                inputBuffer = "";
+                updateDisplayFromBuffer();
             }
         });
 
-        // 3. PANTALLA COMPLETA
         function toggleFullScreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen();
@@ -361,38 +421,17 @@
             }
         }
 
-        // 4. ACTUALIZAR ESTADOS
-        muteToggle.addEventListener('change', (e) => isMuted = e.target.checked);
-        courtesyToggle.addEventListener('change', (e) => isCourtesyMode = e.target.checked);
-
-        // Prueba de Audio (UNA SOLA VEZ)
         function testAudio() {
             if (!isMuted) {
                 alarmAudio.currentTime = 0;
-                alarmAudio.loop = false; // Importante: Desactivar bucle para test
-                alarmAudio.play().catch(e => alert("No se encontró el archivo 'audio/alarma.mp3' o el navegador bloqueó el autoplay."));
+                alarmAudio.loop = false;
+                alarmAudio.play().catch(e => alert("No se pudo reproducir audio."));
             } else {
                 alert("El modo silencio está activado.");
             }
         }
 
-        // --- LÓGICA DEL CRONÓMETRO ---
-        let inputBuffer = "";
-        let totalSeconds = 0;
-        let initialSeconds = 0;
-        let timerInterval;
-        let isRunning = false;
-        
-        // Elementos DOM
-        const hVal = document.getElementById('hVal');
-        const mVal = document.getElementById('mVal');
-        const sVal = document.getElementById('sVal');
-        const setupPanel = document.getElementById('setupPanel');
-        const timerControls = document.getElementById('timerControls');
-        const startStopBtn = document.getElementById('startStopBtn');
-        const btnText = document.getElementById('btnText');
-        const playIcon = document.getElementById('playIcon');
-        const mainBody = document.getElementById('mainBody');
+        // --- LÓGICA CORE ---
 
         function updateDisplayFromBuffer() {
             let padded = inputBuffer.padStart(6, '0');
@@ -403,7 +442,7 @@
 
         function addNumber(num) {
             if (inputBuffer.length < 6) {
-                if (inputBuffer === "" && num === 0) return;
+                if (inputBuffer.length === 0 && num === 0) return; 
                 inputBuffer += num;
                 updateDisplayFromBuffer();
             }
@@ -411,141 +450,148 @@
 
         function clearInput() {
             inputBuffer = "";
-            hVal.innerText = "00"; mVal.innerText = "00"; sVal.innerText = "00";
+            updateDisplayFromBuffer();
         }
 
         function setTimer() {
-            if (inputBuffer === "") return;
+            // Convierte el buffer a segundos
+            if (inputBuffer.length === 0) return;
             let padded = inputBuffer.padStart(6, '0');
-            totalSeconds = (parseInt(padded.slice(0, 2)) * 3600) + (parseInt(padded.slice(2, 4)) * 60) + parseInt(padded.slice(4, 6));
+            let h = parseInt(padded.slice(0, 2));
+            let m = parseInt(padded.slice(2, 4));
+            let s = parseInt(padded.slice(4, 6));
+
+            totalSeconds = (h * 3600) + (m * 60) + s;
             initialSeconds = totalSeconds;
 
             if (totalSeconds > 0) {
                 setupPanel.classList.add('hidden');
                 timerControls.classList.remove('hidden');
-                timerControls.classList.add('grid');
             }
         }
 
-        function formatSeconds(sec) {
-            let h = Math.floor(sec / 3600);
-            let m = Math.floor((sec % 3600) / 60);
-            let s = Math.floor(sec % 60);
-            return { h: h.toString().padStart(2, '0'), m: m.toString().padStart(2, '0'), s: s.toString().padStart(2, '0') };
-        }
-
-        function updateTimerDisplay() {
-            const time = formatSeconds(totalSeconds);
-            hVal.innerText = time.h; mVal.innerText = time.m; sVal.innerText = time.s;
-        }
-
-        // --- SISTEMA DE ALARMA ---
-        function playAlarmSound(loop = false) {
-            if (!isMuted) {
-                alarmAudio.currentTime = 0;
-                alarmAudio.loop = loop; // Control manual del bucle
-                alarmAudio.play().catch(e => console.log("Autoplay bloqueado", e));
-            }
-        }
-
-        function triggerAlarm() {
-            clearInterval(timerInterval);
-            isRunning = false;
-            
-            // UI Alarma Inicial
-            mainBody.classList.add('alarm-state');
-            startStopBtn.style.display = 'none';
-
-            if (isCourtesyMode) {
-                // 1. Sonar (SIN LOOP al inicio porque paramos al 1s)
-                playAlarmSound(true); // Loop true para que suene seguido el primer segundo
+        function toggleStartStop() {
+            if (isRunning) {
+                // Pausar
+                clearInterval(timerInterval);
+                isRunning = false;
+                btnText.innerText = "Resume";
+                playIcon.classList.replace('ph-pause', 'ph-play');
+                startStopBtn.classList.replace('bg-murcia-dark', 'bg-green-600');
+                startStopBtn.classList.replace('dark:bg-paper', 'bg-green-600'); 
+                startStopBtn.classList.remove('text-white', 'text-murcia-dark'); // Limpiar clases específicas de tema
+                startStopBtn.classList.add('text-white'); // Volver a estilo botón verde
                 
-                // 2. Parar al 1 segundo e iniciar cuenta atrás de cortesía
-                courtesyTimeout1 = setTimeout(() => {
-                    alarmAudio.pause();
-                    alarmAudio.currentTime = 0;
-                    
-                    courtesyIndicator.classList.remove('hidden');
-                    mainBody.classList.remove('alarm-state'); 
-                    
-                    let courtesyLeft = 15;
-                    courtesyCountDisplay.innerText = courtesyLeft;
-                    
-                    courtesyInterval = setInterval(() => {
-                        courtesyLeft--;
-                        courtesyCountDisplay.innerText = courtesyLeft;
-                        if(courtesyLeft <= 0) clearInterval(courtesyInterval);
-                    }, 1000);
-
-                }, 1000);
-
-                // 3. Volver a sonar a los 16 segundos (CON LOOP)
-                courtesyTimeout2 = setTimeout(() => {
-                    courtesyIndicator.classList.add('hidden');
-                    clearInterval(courtesyInterval);
-                    
-                    mainBody.classList.add('alarm-state'); 
-                    playAlarmSound(true); // Activar Loop indefinido
-                }, 16000); 
-
+                // Pausar cortesía si está activa
+                if(courtesyInterval) clearInterval(courtesyInterval);
+                clearTimeout(courtesyTimeout1);
+                clearTimeout(courtesyTimeout2);
+                
+                // Parar alarma
+                alarmAudio.pause();
+                alarmAudio.currentTime = 0;
+                mainBody.classList.remove('alarm-state');
+                
             } else {
-                // Modo Normal (CON LOOP)
-                playAlarmSound(true);
+                // Arrancar
+                isRunning = true;
+                btnText.innerText = "Pause";
+                playIcon.classList.replace('ph-play', 'ph-pause');
+                
+                // Cambiar estilo botón a "neutro/oscuro" mientras corre
+                startStopBtn.classList.remove('bg-green-600', 'text-white');
+                startStopBtn.classList.add('bg-murcia-dark', 'text-white', 'dark:bg-paper', 'dark:text-murcia-dark');
+
+                timerInterval = setInterval(() => {
+                    if (isStopwatchMode) {
+                        // MODO CRONÓMETRO: Cuenta hacia ARRIBA
+                        totalSeconds++;
+                        updateDisplay(totalSeconds);
+                    } else {
+                        // MODO TIMER: Cuenta hacia ABAJO
+                        if (totalSeconds > 0) {
+                            totalSeconds--;
+                            updateDisplay(totalSeconds);
+                        } else {
+                            // Timer llegó a 0
+                            clearInterval(timerInterval);
+                            triggerAlarmLogic();
+                        }
+                    }
+                }, 1000);
             }
         }
-
-        function start() {
-            if (totalSeconds <= 0) return;
-            isRunning = true;
-            btnText.innerText = "Pause";
-            playIcon.classList.replace('ph-play', 'ph-pause');
-            startStopBtn.classList.replace('bg-green-600', 'bg-murcia-dark');
-            startStopBtn.classList.replace('text-white', 'text-white');
-            startStopBtn.classList.add('dark:bg-paper', 'dark:text-murcia-dark');
-
-            timerInterval = setInterval(() => {
-                totalSeconds--;
-                updateTimerDisplay();
-                if (totalSeconds <= 0) {
-                    triggerAlarm();
-                }
-            }, 1000);
-        }
-
-        function pause() {
-            clearInterval(timerInterval);
-            isRunning = false;
-            btnText.innerText = "Resume";
-            playIcon.classList.replace('ph-pause', 'ph-play');
-            startStopBtn.classList.replace('bg-murcia-dark', 'bg-green-600');
-            startStopBtn.classList.remove('dark:bg-paper', 'dark:text-murcia-dark');
-        }
-
-        startStopBtn.addEventListener('click', () => isRunning ? pause() : start());
 
         function resetTimer() {
             clearInterval(timerInterval);
-            clearInterval(courtesyInterval);
+            isRunning = false;
+            
+            // Limpiar alarmas y cortesía
             clearTimeout(courtesyTimeout1);
             clearTimeout(courtesyTimeout2);
-            
-            alarmAudio.pause();
-            alarmAudio.currentTime = 0;
-            alarmAudio.loop = false;
-            
+            clearInterval(courtesyInterval);
             mainBody.classList.remove('alarm-state');
             courtesyIndicator.classList.add('hidden');
-            startStopBtn.style.display = 'flex';
+            alarmAudio.pause();
+            alarmAudio.currentTime = 0;
 
-            isRunning = false;
+            // Resetear UI Botón
             btnText.innerText = "Start";
             playIcon.classList.replace('ph-pause', 'ph-play');
-            
-            startStopBtn.className = "btn-brutal bg-green-600 text-white dark:border-paper font-display uppercase text-3xl py-6 flex items-center justify-center gap-3 hover:bg-green-500 active:translate-y-1 active:shadow-none";
+            startStopBtn.classList.remove('bg-murcia-dark', 'dark:bg-paper', 'dark:text-murcia-dark');
+            startStopBtn.classList.add('bg-green-600', 'text-white');
 
-            // RESET A TIEMPO INICIAL
-            totalSeconds = initialSeconds;
-            updateTimerDisplay();
+            if (isStopwatchMode) {
+                // Reset a 00:00:00 pero mantener controles
+                totalSeconds = 0;
+                updateDisplay(0);
+            } else {
+                // Reset a Input y volver a mostrar teclado
+                timerControls.classList.add('hidden');
+                setupPanel.classList.remove('hidden');
+                inputBuffer = "";
+                updateDisplayFromBuffer();
+            }
+        }
+
+        function updateDisplay(secondsTotal) {
+            const h = Math.floor(secondsTotal / 3600);
+            const m = Math.floor((secondsTotal % 3600) / 60);
+            const s = secondsTotal % 60;
+
+            hVal.innerText = String(h).padStart(2, '0');
+            mVal.innerText = String(m).padStart(2, '0');
+            sVal.innerText = String(s).padStart(2, '0');
+        }
+
+        // --- LÓGICA DE ALARMA (Solo Timer) ---
+        function triggerAlarmLogic() {
+            // Sonido inicial
+            if (!isMuted) {
+                alarmAudio.loop = true;
+                alarmAudio.play().catch(e => console.log(e));
+            }
+            mainBody.classList.add('alarm-state');
+
+            // Si cortesía está activada
+            if (isCourtesyMode) {
+                let cTime = 15;
+                courtesyIndicator.classList.remove('hidden');
+                courtesyCountDisplay.innerText = cTime;
+
+                courtesyInterval = setInterval(() => {
+                    cTime--;
+                    courtesyCountDisplay.innerText = cTime;
+                    if (cTime <= 0) clearInterval(courtesyInterval);
+                }, 1000);
+
+                // Parar parpadeo y sonido a los 15s
+                courtesyTimeout1 = setTimeout(() => {
+                    mainBody.classList.remove('alarm-state');
+                    alarmAudio.pause();
+                    alarmAudio.currentTime = 0;
+                }, 15000);
+            }
         }
     </script>
 </body>
