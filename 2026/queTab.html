@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRO... | BP Murcia 2026</title>
+    <link rel="icon" href="img/BPMurcia2026.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['"Archivo Black"', 'sans-serif'],
+                        'body': ['"Space Grotesk"', 'sans-serif'],
+                    },
+                    colors: {
+                        'murcia-red': '#D9291C',      
+                        'murcia-dark': '#0f0f0f',
+                        'murcia-pastel': '#FCE7E7', 
+                        'paper': '#f8f8f8',
+                    },
+                    animation: {
+                        'marquee': 'marquee 15s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        shake: {
+                            '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' },
+                            '20%, 80%': { transform: 'translate3d(2px, 0, 0)' },
+                            '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' },
+                            '40%, 60%': { transform: 'translate3d(4px, 0, 0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { 
+            background-color: #0f0f0f; 
+            color: #f8f8f8;
+            overflow: hidden; /* Para que no haya scroll en esta página */
+        }
+        
+        * { border-radius: 0 !important; }
+
+        .text-stroke { -webkit-text-stroke: 2px #f8f8f8; color: transparent; }
+        .text-stroke-red { -webkit-text-stroke: 2px #D9291C; color: transparent; }
+        
+        /* Textura granulada (misma que la home) */
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="font-body h-screen flex flex-col items-center justify-center relative selection:bg-white selection:text-murcia-red">
+
+    <div class="noise-overlay"></div>
+
+    <div class="absolute inset-0 flex flex-col justify-between opacity-10 select-none pointer-events-none z-0">
+        <div class="whitespace-nowrap animate-marquee font-display text-[15vh] leading-none text-white">
+            DEMASIADO PRONTO TOO SOON DEMASIADO PRONTO TOO SOON DEMASIADO PRONTO TOO SOON
+        </div>
+        <div class="whitespace-nowrap animate-marquee font-display text-[15vh] leading-none text-white" style="animation-direction: reverse;">
+            RELAJA RELAJA RELAJA RELAJA RELAJA RELAJA RELAJA RELAJA
+        </div>
+        <div class="whitespace-nowrap animate-marquee font-display text-[15vh] leading-none text-white">
+            PACIENCIA PACIENCIA PACIENCIA PACIENCIA PACIENCIA PACIENCIA
+        </div>
+    </div>
+
+    <div class="relative z-10 text-center max-w-4xl px-4 animate-float">
+        
+        <div class="mb-6 inline-block hover:animate-shake cursor-help">
+            <i class="ph-fill ph-siren text-6xl md:text-8xl text-murcia-red"></i>
+        </div>
+
+        <h1 class="font-display text-8xl md:text-[12rem] leading-[0.8] mb-4">
+            <span class="text-stroke block hover:text-white transition-colors duration-300">BRO...</span>
+        </h1>
+
+        <div class="bg-white text-murcia-dark p-6 md:p-8 border-4 border-murcia-red rotate-1 hover:rotate-0 transition-transform duration-300 max-w-2xl mx-auto shadow-[8px_8px_0px_0px_#D9291C]">
+            <h2 class="font-display text-2xl md:text-4xl uppercase mb-4 leading-tight">
+                ¿Qué Tab quieres ver?
+            </h2>
+            <p class="font-mono text-sm md:text-lg uppercase tracking-wide border-t-2 border-murcia-dark pt-4 font-bold">
+                No ha empezado el torneo.<br>
+                <span class="text-murcia-red">Bájale a la ansiedad, crack.</span>
+            </p>
+        </div>
+
+        <div class="mt-12">
+            <a href="2026.html" class="group relative inline-block cursor-pointer">
+                <div class="absolute inset-0 bg-murcia-red translate-x-2 translate-y-2 transition-transform duration-300 group-hover:translate-x-1 group-hover:translate-y-1"></div>
+                <div class="relative bg-murcia-dark border-2 border-white px-8 py-4 md:px-12 md:py-5 transition-transform duration-300 group-hover:-translate-x-1 group-hover:-translate-y-1">
+                    <span class="font-display text-xl md:text-2xl text-white uppercase tracking-widest group-hover:text-murcia-red transition-colors flex items-center gap-3">
+                        <i class="ph-bold ph-arrow-u-up-left"></i>
+                        Volver a la realidad
+                    </span>
+                </div>
+            </a>
+        </div>
+
+        <p class="mt-16 font-mono text-[10px] text-gray-500 uppercase tracking-[0.3em]">
+            Error 404: Paciencia Not Found
+        </p>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer BP Murcia 2026</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⏱️</text></svg>">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['"Archivo Black"', 'sans-serif'],
+                        'body': ['"Space Grotesk"', 'sans-serif'],
+                    },
+                    colors: {
+                        'murcia-red': '#D9291C',      
+                        'murcia-dark': '#0f0f0f',
+                        'murcia-pastel': '#FCE7E7', 
+                        'paper': '#f8f8f8',
+                    },
+                    animation: {
+                        'flash-alarm': 'flash 0.5s infinite',
+                        // 'pulse-fast': 'pulse 0.5s cubic-bezier(0.4, 0, 0.6, 1) infinite', // Eliminada para evitar parpadeo
+                    },
+                    keyframes: {
+                        flash: {
+                            '0%, 100%': { backgroundColor: '#D9291C', color: '#ffffff' },
+                            '50%': { backgroundColor: '#0f0f0f', color: '#D9291C' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { 
+            overflow-x: hidden; 
+            user-select: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        * { border-radius: 0 !important; }
+        
+        /* Brutalist Shadow Utility */
+        .shadow-hard { box-shadow: 6px 6px 0px 0px currentColor; }
+        .shadow-hard-sm { box-shadow: 4px 4px 0px 0px currentColor; }
+        
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .btn-brutal {
+            border: 4px solid currentColor;
+            box-shadow: 6px 6px 0px 0px currentColor;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+        .btn-brutal:active {
+            transform: translate(4px, 4px);
+            box-shadow: 2px 2px 0px 0px currentColor;
+        }
+        
+        /* Estilo para el botón pequeño */
+        .btn-small {
+            border: 2px solid currentColor;
+            box-shadow: 3px 3px 0px 0px currentColor;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+        .btn-small:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px 0px currentColor;
+        }
+
+        .btn-numpad {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 2rem;
+        }
+
+        /* Toggle Styles */
+        .toggle-checkbox { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
+        .toggle-track { position: relative; display: inline-block; width: 64px; height: 36px; background-color: #e0e0e0; border: 3px solid #0f0f0f; transition: all 0.3s ease; }
+        .toggle-thumb { position: absolute; top: 50%; transform: translateY(-50%); left: 4px; height: 22px; width: 22px; background-color: #0f0f0f; transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); }
+        .toggle-checkbox:checked + .toggle-track { background-color: #D9291C; border-color: #0f0f0f; }
+        .toggle-checkbox:checked + .toggle-track .toggle-thumb { left: calc(100% - 26px); background-color: #ffffff; }
+        .dark .toggle-track { background-color: #333; border-color: #f8f8f8; }
+        .dark .toggle-thumb { background-color: #f8f8f8; }
+        .dark .toggle-checkbox:checked + .toggle-track { background-color: #D9291C; border-color: #f8f8f8; }
+        .dark .toggle-checkbox:checked + .toggle-track .toggle-thumb { background-color: #0f0f0f; border-color: #f8f8f8; }
+
+        .digit-box { font-variant-numeric: tabular-nums; }
+        .alarm-state { animation: flash-alarm 0.5s infinite; }
+        
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #D9291C; border-left: 2px solid #0f0f0f; }
+    </style>
+</head>
+<body id="mainBody" class="font-body min-h-screen flex flex-col relative bg-paper text-murcia-dark dark:bg-murcia-dark dark:text-paper transition-colors duration-300">
+
+    <div class="noise-overlay z-0"></div>
+
+    <header class="flex justify-between items-center p-6 border-b-4 border-murcia-dark dark:border-paper bg-white dark:bg-murcia-dark z-20 relative shrink-0 transition-colors duration-300">
+        <a href="2026.html" class="w-32 md:w-48 block hover:opacity-80 transition-opacity">
+            <img src="img/BPMurcia2026.png" onerror="this.onerror=null; this.src='https://placehold.co/200x80/D9291C/FFFFFF?text=BP+MURCIA&font=roboto'" alt="Logo BP Murcia" class="w-full h-auto">
+        </a>
+        
+        <div class="flex items-center gap-6">
+            <button id="fullscreenBtn" onclick="toggleFullScreen()" class="text-3xl hover:text-murcia-red transition-colors active:scale-95" title="Pantalla Completa">
+                <i id="fsIcon" class="ph-bold ph-arrows-out"></i>
+            </button>
+            <button id="menuToggleBtn" class="text-4xl hover:text-murcia-red transition-colors active:scale-95">
+                <i class="ph-bold ph-list"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-grow flex flex-col items-center justify-center p-4 z-10 relative w-full max-w-7xl mx-auto">
+        
+        <div class="w-full relative flex flex-col items-center">
+
+            <div class="w-full text-center mb-12 relative mt-12 group">
+                <div class="inline-block relative">
+                    <div class="absolute inset-0 bg-murcia-red translate-x-4 translate-y-4 -z-10 border-4 border-murcia-dark dark:border-paper hidden md:block transition-transform group-hover:translate-x-6 group-hover:translate-y-6"></div>
+                    
+                    <div class="bg-white dark:bg-black border-4 border-murcia-dark dark:border-paper p-8 md:p-16 transition-colors duration-300 relative overflow-hidden min-w-[300px] md:min-w-[600px]">
+                        
+                        <div id="modeLabel" class="hidden absolute top-2 right-4 font-mono text-xs text-murcia-red tracking-widest uppercase font-bold">CRONÓMETRO</div>
+
+                        <h1 id="display" class="font-display text-[15vw] md:text-[11rem] leading-none tracking-tight digit-box select-none relative z-10">
+                            <span id="hVal">00</span><span class="text-murcia-red pb-4 inline-block align-top text-[0.8em]">:</span><span id="mVal">00</span><span class="text-murcia-red pb-4 inline-block align-top text-[0.8em]">:</span><span id="sVal">00</span>
+                        </h1>
+
+                        <div id="courtesyOverlay" class="hidden absolute inset-0 z-50 bg-murcia-red flex flex-col items-center justify-center">
+                            <div class="text-white font-display text-4xl md:text-6xl uppercase leading-none mb-2 tracking-widest">CORTESÍA</div>
+                            <div id="courtesyBigCount" class="text-white font-display text-[8rem] md:text-[12rem] leading-none">15</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div id="setupPanel" class="w-full max-w-md mb-12">
+                <div class="grid grid-cols-3 gap-4">
+                    <button onclick="addNumber(1)" class="btn-numpad btn-brutal py-4 bg-white dark:bg-gray-800 hover:bg-murcia-pastel dark:hover:bg-gray-700">1</button>
+                    <button onclick="addNumber(2)" class="btn-numpad btn-brutal py-4 bg-white dark:bg-gray-800 hover:bg-murcia-pastel dark:hover:bg-gray-700">2</button>
+                    <button onclick="addNumber(3)" class="btn-numpad btn-brutal py-4 bg-white dark:bg-gray-800 hover:bg-murcia-pastel dark:hover:bg-gray-700">3</button>
+                    <button onclick="addNumber(4)" class="btn-numpad btn-brutal py-4 bg-white dark:bg-gray-800 hover:bg-murcia-pastel dark:hover:bg-gray-700">4</button>
+                    <button onclick="addNumber(5)" class="btn-numpad btn-brutal py-4 bg-white dark:bg-gray-800 hover:bg-murcia-pastel dark:hover:bg-gray-700">5</button>
+                    <button onclick="addNumber(6)" class="btn-numpad btn-brutal py-4 bg-white dark:bg-gray-800 hover:bg-murcia-pastel dark:hover:bg-gray-700">6</button>
+                    <button onclick="addNumber(7)" class="btn-numpad btn-brutal py-4 bg-white dark:bg-gray-800 hover:bg-murcia-pastel dark:hover:bg-gray-700">7</button>
+                    <button onclick="addNumber(8)" class="btn-numpad btn-brutal py-4 bg-white dark:bg-gray-800 hover:bg-murcia-pastel dark:hover:bg-gray-700">8</button>
+                    <button onclick="addNumber(9)" class="btn-numpad btn-brutal py-4 bg-white dark:bg-gray-800 hover:bg-murcia-pastel dark:hover:bg-gray-700">9</button>
+                    <button onclick="clearInput()" class="btn-numpad btn-brutal py-4 bg-gray-200 dark:bg-gray-700 text-base font-bold tracking-widest uppercase text-murcia-red hover:bg-gray-300">Borrar</button>
+                    <button onclick="addNumber(0)" class="btn-numpad btn-brutal py-4 bg-white dark:bg-gray-800 hover:bg-murcia-pastel dark:hover:bg-gray-700">0</button>
+                    <button onclick="setTimer()" class="btn-numpad btn-brutal py-4 bg-murcia-dark dark:bg-paper text-white dark:text-murcia-dark text-base font-bold tracking-widest uppercase hover:bg-murcia-red dark:hover:bg-murcia-red dark:hover:text-white transition-colors">SET</button>
+                </div>
+            </div>
+
+            <div id="timerControls" class="w-full max-w-2xl hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+                <button id="startStopBtn" onclick="toggleStartStop()" class="btn-brutal bg-green-600 text-white dark:border-paper font-display uppercase text-3xl py-6 flex items-center justify-center gap-3 hover:bg-green-500 active:translate-y-1 active:shadow-none transition-colors">
+                    <i class="ph-fill ph-play" id="playIcon"></i>
+                    <span id="btnText">Start</span>
+                </button>
+
+                <button onclick="resetTimer()" class="btn-brutal bg-white dark:bg-gray-800 text-current dark:border-paper font-display uppercase text-3xl py-6 flex items-center justify-center gap-3 hover:text-murcia-red active:translate-y-1 active:shadow-none">
+                    <i class="ph-bold ph-arrow-counter-clockwise"></i>
+                    <span>Reset</span>
+                </button>
+            </div>
+
+            <button id="changeTimeBtn" onclick="changeTime()" class="hidden mt-8 btn-small px-6 py-2 bg-white dark:bg-gray-800 text-xs font-display uppercase tracking-widest hover:bg-murcia-pastel dark:hover:bg-gray-700 flex items-center gap-2 opacity-70 hover:opacity-100 transition-all">
+                <i class="ph-bold ph-pencil-simple"></i> Cambiar Tiempo
+            </button>
+        </div>
+
+    </main>
+
+    <div id="optionsModal" class="fixed inset-0 bg-black/80 z-50 hidden flex justify-end transition-opacity duration-300 backdrop-blur-sm">
+        <div class="bg-paper dark:bg-murcia-dark text-murcia-dark dark:text-paper w-full md:w-[500px] h-full border-l-8 border-murcia-dark dark:border-paper p-10 flex flex-col shadow-hard overflow-y-auto">
+            
+            <div class="flex justify-between items-center mb-12 border-b-4 border-current pb-6">
+                <h2 class="font-display text-4xl uppercase tracking-wider">Ajustes</h2>
+                <button id="menuCloseBtn" class="text-4xl hover:text-murcia-red transition-transform hover:rotate-90">
+                    <i class="ph-bold ph-x"></i>
+                </button>
+            </div>
+
+            <div class="mb-12">
+                <div class="flex items-center gap-3 mb-6 opacity-50">
+                    <i class="ph-fill ph-gear-six text-2xl"></i>
+                    <h3 class="font-display text-lg uppercase tracking-widest">Modo</h3>
+                </div>
+                <div class="flex justify-between items-center p-4 border-4 border-current bg-white/5 hover:bg-black/5 dark:hover:bg-white/5 transition-colors mb-6">
+                    <div class="flex flex-col">
+                        <span class="font-display text-xl uppercase">Modo Cronómetro</span>
+                        <span class="font-mono text-xs opacity-60">Cuenta hacia arriba</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="stopwatchToggle" class="toggle-checkbox">
+                        <div class="toggle-track"><div class="toggle-thumb"></div></div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="mb-12">
+                <div class="flex items-center gap-3 mb-6 opacity-50">
+                    <i class="ph-fill ph-paint-brush-broad text-2xl"></i>
+                    <h3 class="font-display text-lg uppercase tracking-widest">Visual</h3>
+                </div>
+                <div class="flex justify-between items-center p-4 border-4 border-current bg-white/5 hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+                    <div class="flex flex-col"><span class="font-display text-xl uppercase">Modo Oscuro</span></div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="darkModeToggle" class="toggle-checkbox">
+                        <div class="toggle-track"><div class="toggle-thumb"></div></div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="mb-12">
+                <div class="flex items-center gap-3 mb-6 opacity-50">
+                    <i class="ph-fill ph-speaker-high text-2xl"></i>
+                    <h3 class="font-display text-lg uppercase tracking-widest">Audio & Alarma</h3>
+                </div>
+                <div class="flex justify-between items-center mb-6 p-4 border-4 border-current bg-white/5 hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+                    <div class="flex flex-col"><span class="font-display text-xl uppercase">Silenciar</span></div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="muteToggle" class="toggle-checkbox">
+                        <div class="toggle-track"><div class="toggle-thumb"></div></div>
+                    </label>
+                </div>
+                <div class="flex justify-between items-center mb-6 p-4 border-4 border-current bg-white/5 hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+                    <div class="flex flex-col">
+                        <span class="font-display text-xl uppercase">Tiempo de Cortesía</span>
+                        <span class="font-mono text-xs text-murcia-red font-bold mt-1">15s pantalla roja</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="courtesyToggle" class="toggle-checkbox" checked>
+                        <div class="toggle-track"><div class="toggle-thumb"></div></div>
+                    </label>
+                </div>
+                <button onclick="testAudio()" class="w-full text-center mt-2 font-display text-sm tracking-widest text-murcia-red border-b-2 border-transparent hover:border-murcia-red transition-colors">
+                    <i class="ph-bold ph-play-circle mr-1"></i> PROBAR SONIDO
+                </button>
+                <audio id="alarmAudio" src="audio/alarma.mp3" preload="auto"></audio>
+            </div>
+            
+            <div class="mt-auto pt-8 border-t-4 border-current opacity-40 text-center font-mono text-xs uppercase tracking-widest">BP Murcia 2026</div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const hVal = document.getElementById('hVal');
+        const mVal = document.getElementById('mVal');
+        const sVal = document.getElementById('sVal');
+        const setupPanel = document.getElementById('setupPanel');
+        const timerControls = document.getElementById('timerControls');
+        const changeTimeBtn = document.getElementById('changeTimeBtn');
+        const startStopBtn = document.getElementById('startStopBtn');
+        const btnText = document.getElementById('btnText');
+        const playIcon = document.getElementById('playIcon');
+        const mainBody = document.getElementById('mainBody');
+        const courtesyOverlay = document.getElementById('courtesyOverlay');
+        const courtesyBigCount = document.getElementById('courtesyBigCount');
+        const modeLabel = document.getElementById('modeLabel');
+        const alarmAudio = document.getElementById('alarmAudio');
+        
+        // Settings Toggles
+        const optionsModal = document.getElementById('optionsModal');
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const muteToggle = document.getElementById('muteToggle');
+        const courtesyToggle = document.getElementById('courtesyToggle');
+        const stopwatchToggle = document.getElementById('stopwatchToggle');
+
+        // State Variables
+        let isMuted = false;
+        let isCourtesyMode = true; // Por defecto true para debate
+        let isStopwatchMode = false;
+        let isRunning = false;
+        let timerInterval;
+        let courtesyInterval;
+        
+        let inputBuffer = "";
+        let totalSeconds = 0;
+        let initialSeconds = 0; // Guardamos el tiempo original para el Reset BP
+
+        // --- MENU & SETTINGS ---
+        document.getElementById('menuToggleBtn').addEventListener('click', () => optionsModal.classList.remove('hidden'));
+        document.getElementById('menuCloseBtn').addEventListener('click', () => optionsModal.classList.add('hidden'));
+        
+        darkModeToggle.addEventListener('change', (e) => document.documentElement.classList.toggle('dark', e.target.checked));
+        muteToggle.addEventListener('change', (e) => isMuted = e.target.checked);
+        courtesyToggle.addEventListener('change', (e) => isCourtesyMode = e.target.checked);
+
+        stopwatchToggle.addEventListener('change', (e) => {
+            isStopwatchMode = e.target.checked;
+            fullReset(); // Reset completo al cambiar de modo
+            
+            if (isStopwatchMode) {
+                // Modo Cronómetro
+                setupPanel.classList.add('hidden');
+                timerControls.classList.remove('hidden');
+                changeTimeBtn.classList.add('hidden'); // No necesario en cronómetro
+                modeLabel.classList.remove('hidden');
+                totalSeconds = 0;
+                updateDisplay(0);
+            } else {
+                // Modo Timer
+                setupPanel.classList.remove('hidden');
+                timerControls.classList.add('hidden');
+                changeTimeBtn.classList.add('hidden');
+                modeLabel.classList.add('hidden');
+                inputBuffer = "";
+                updateDisplayFromBuffer();
+            }
+        });
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+                document.getElementById('fsIcon').classList.replace('ph-arrows-out', 'ph-arrows-in');
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                    document.getElementById('fsIcon').classList.replace('ph-arrows-in', 'ph-arrows-out');
+                }
+            }
+        }
+
+        function testAudio() {
+            if (!isMuted) {
+                alarmAudio.currentTime = 0;
+                alarmAudio.loop = false;
+                alarmAudio.play().catch(e => alert("Error de audio. Revisa permisos o archivo."));
+            }
+        }
+
+        // --- LOGIC: NUMPAD INPUT ---
+        function updateDisplayFromBuffer() {
+            let padded = inputBuffer.padStart(6, '0');
+            hVal.innerText = padded.slice(0, 2);
+            mVal.innerText = padded.slice(2, 4);
+            sVal.innerText = padded.slice(4, 6);
+        }
+
+        function addNumber(num) {
+            if (inputBuffer.length < 6) {
+                if (inputBuffer.length === 0 && num === 0) return;
+                inputBuffer += num;
+                updateDisplayFromBuffer();
+            }
+        }
+
+        function clearInput() {
+            inputBuffer = "";
+            updateDisplayFromBuffer();
+        }
+
+        // --- LOGIC: TIMER CONTROL ---
+        
+        // 1. SET TIMER (Confirma el tiempo ingresado)
+        function setTimer() {
+            if (inputBuffer.length === 0) return;
+            
+            // Parse inputs
+            let padded = inputBuffer.padStart(6, '0');
+            let h = parseInt(padded.slice(0, 2));
+            let m = parseInt(padded.slice(2, 4));
+            let s = parseInt(padded.slice(4, 6));
+
+            totalSeconds = (h * 3600) + (m * 60) + s;
+            initialSeconds = totalSeconds; // GUARDA EL TIEMPO ORIGINAL
+
+            if (totalSeconds > 0) {
+                setupPanel.classList.add('hidden');
+                timerControls.classList.remove('hidden');
+                changeTimeBtn.classList.remove('hidden'); // Muestra botón "Cambiar Tiempo"
+            }
+        }
+
+        // 2. CAMBIAR TIEMPO (Vuelve al teclado numérico)
+        function changeTime() {
+            // Detener todo
+            stopInternalTimer();
+            cleanupAlarmState();
+
+            // UI Changes
+            timerControls.classList.add('hidden');
+            changeTimeBtn.classList.add('hidden');
+            setupPanel.classList.remove('hidden');
+            
+            // Opcional: Borrar buffer o mantenerlo? Lo borramos para fresh start
+            inputBuffer = ""; 
+            updateDisplayFromBuffer();
+        }
+
+        // 3. START / STOP
+        function toggleStartStop() {
+            if (isRunning) {
+                // PAUSE
+                clearInterval(timerInterval);
+                isRunning = false;
+                
+                // UI Button Style
+                btnText.innerText = "Resume";
+                playIcon.classList.replace('ph-pause', 'ph-play');
+                startStopBtn.classList.replace('bg-murcia-dark', 'bg-green-600');
+                startStopBtn.classList.replace('dark:bg-paper', 'bg-green-600'); 
+                startStopBtn.classList.remove('text-white', 'text-murcia-dark'); 
+                startStopBtn.classList.add('text-white');
+                
+                // Stop Sounds/Animations if active
+                if (courtesyInterval) clearInterval(courtesyInterval);
+                alarmAudio.pause();
+                
+            } else {
+                // START
+                isRunning = true;
+                
+                // UI Button Style
+                btnText.innerText = "Pause";
+                playIcon.classList.replace('ph-play', 'ph-pause');
+                startStopBtn.classList.remove('bg-green-600', 'text-white');
+                startStopBtn.classList.add('bg-murcia-dark', 'text-white', 'dark:bg-paper', 'dark:text-murcia-dark');
+
+                // Interval Logic
+                timerInterval = setInterval(() => {
+                    if (isStopwatchMode) {
+                        totalSeconds++;
+                        updateDisplay(totalSeconds);
+                    } else {
+                        // Timer Mode
+                        if (totalSeconds > 0) {
+                            totalSeconds--;
+                            updateDisplay(totalSeconds);
+                        } else {
+                            // TIME IS UP
+                            clearInterval(timerInterval);
+                            triggerAlarmLogic();
+                        }
+                    }
+                }, 1000);
+            }
+        }
+
+        // 4. RESET (Solo reinicia el contador, mantiene configuración)
+        function resetTimer() {
+            stopInternalTimer();
+            cleanupAlarmState();
+
+            // Restaurar UI del botón Play
+            btnText.innerText = "Start";
+            playIcon.classList.replace('ph-pause', 'ph-play');
+            startStopBtn.classList.remove('bg-murcia-dark', 'dark:bg-paper', 'dark:text-murcia-dark');
+            startStopBtn.classList.add('bg-green-600', 'text-white');
+
+            if (isStopwatchMode) {
+                totalSeconds = 0;
+                updateDisplay(0);
+            } else {
+                // MODO TIMER: Vuelve al 'initialSeconds', NO al teclado
+                totalSeconds = initialSeconds;
+                updateDisplay(initialSeconds);
+                // timerControls se mantiene visible
+                // changeTimeBtn se mantiene visible
+            }
+        }
+        
+        // Helper: Detiene el intervalo y estado de running
+        function stopInternalTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+        }
+
+        // Helper: Limpia estados de alarma y cortesía
+        function cleanupAlarmState() {
+            clearInterval(courtesyInterval);
+            courtesyOverlay.classList.add('hidden');
+            alarmAudio.pause();
+            alarmAudio.currentTime = 0;
+        }
+
+        // Helper: Full Reset (usado al cambiar de modo timer/stopwatch)
+        function fullReset() {
+            stopInternalTimer();
+            cleanupAlarmState();
+            btnText.innerText = "Start";
+            playIcon.classList.replace('ph-pause', 'ph-play');
+            startStopBtn.classList.remove('bg-murcia-dark', 'dark:bg-paper');
+            startStopBtn.classList.add('bg-green-600');
+        }
+
+        function updateDisplay(secondsTotal) {
+            const h = Math.floor(secondsTotal / 3600);
+            const m = Math.floor((secondsTotal % 3600) / 60);
+            const s = secondsTotal % 60;
+            hVal.innerText = String(h).padStart(2, '0');
+            mVal.innerText = String(m).padStart(2, '0');
+            sVal.innerText = String(s).padStart(2, '0');
+        }
+
+        // --- ALARMA & CORTESÍA ---
+        function triggerAlarmLogic() {
+            // 1. Audio
+            if (!isMuted) {
+                alarmAudio.loop = true;
+                alarmAudio.play().catch(e => console.log(e));
+            }
+
+            // 2. Cortesía Visual (Overlay Gigante)
+            if (isCourtesyMode) {
+                let cTime = 15;
+                courtesyOverlay.classList.remove('hidden');
+                courtesyBigCount.innerText = cTime;
+
+                courtesyInterval = setInterval(() => {
+                    cTime--;
+                    courtesyBigCount.innerText = cTime;
+                    if (cTime <= 0) {
+                        clearInterval(courtesyInterval);
+                        // Al acabar cortesía, paramos el sonido y ocultamos overlay?
+                        // O lo dejamos parpadeando en 0? 
+                        // Generalmente en debate se para.
+                        alarmAudio.pause();
+                        courtesyOverlay.classList.add('hidden');
+                    }
+                }, 1000);
+            } else {
+                // Si no hay cortesía, parpadeo simple del body
+                // mainBody.classList.add('alarm-state'); // Opcional si quieres mantener el flash antiguo
+            }
+        }
+    </script>
+</body>
+</html>
