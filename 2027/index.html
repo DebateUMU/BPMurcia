@@ -35,6 +35,7 @@
                         'float': 'float 6s ease-in-out infinite',
                         'bounce-slow': 'bounce 2s infinite',
                         'pulse-mystery': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'hourglass': 'hourglass 2.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite',
                     },
                     keyframes: {
                         marquee: {
@@ -44,6 +45,13 @@
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
                             '50%': { transform: 'translateY(-6px)' },
+                        },
+                        hourglass: {
+                            '0%': { transform: 'rotate(0deg)' },
+                            '40%': { transform: 'rotate(180deg)' },
+                            '50%': { transform: 'rotate(180deg)' },
+                            '90%': { transform: 'rotate(360deg)' },
+                            '100%': { transform: 'rotate(360deg)' },
                         }
                     },
                     screens: {
@@ -233,7 +241,7 @@
                             <i class="ph-bold ph-lock-key"></i>
                             <span>Próximamente</span>
                         </div>
-                        <i class="ph-bold ph-hourglass-medium text-4xl text-murcia-red animate-pulse"></i>
+                        <i class="ph-bold ph-hourglass-medium text-4xl sm:text-5xl text-murcia-red animate-hourglass inline-block origin-center"></i>
                     </div>
                     <div>
                         <h3 class="font-display text-3xl md:text-5xl uppercase mb-3 leading-none text-murcia-dark">Inscripción<br>Equipos & Jueces</h3>
