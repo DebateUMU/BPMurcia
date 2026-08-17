@@ -1,8 +1,29 @@
 User-agent: *
 Allow: /
 
-# Evitar indexación de archivos de audio y fuentes sin contenido indexable
+# Rastreadores de Inteligencia Artificial (Permitir indexación y cita en respuestas)
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Evitar indexación de archivos de audio
 Disallow: /*/audio/
+
+# Archivo de contexto semántico para LLMs e IAs
+# https://llmstxt.org/
+llms-txt: https://debateumu.github.io/BPMurcia/llms.txt
 
 # Mapa del sitio oficial
 Sitemap: https://debateumu.github.io/BPMurcia/sitemap.xml
+
