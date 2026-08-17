@@ -276,72 +276,78 @@
         </div>
     </nav>
 
-    <header class="relative min-h-[calc(100vh-5rem)] flex flex-col justify-center items-center px-4 overflow-hidden border-b-4 border-murcia-dark bg-white pb-20 md:pb-24">
+    <header class="relative min-h-[calc(100vh-5rem)] md:h-[calc(100vh-5rem)] flex flex-col justify-between items-center px-4 py-4 sm:py-6 md:py-6 overflow-hidden border-b-4 border-murcia-dark bg-white">
         <div class="absolute inset-0 flex flex-col justify-between opacity-[0.04] md:opacity-[0.06] select-none pointer-events-none overflow-hidden">
-            <div class="whitespace-nowrap animate-marquee font-display text-[20vh] md:text-[25vh] leading-none text-murcia-dark">
+            <div class="whitespace-nowrap animate-marquee font-display text-[18vh] md:text-[22vh] leading-none text-murcia-dark">
                 DEBATE MURCIA DEBATE MURCIA DEBATE MURCIA DEBATE MURCIA DEBATE MURCIA
             </div>
-            <div class="whitespace-nowrap animate-marquee font-display text-[20vh] md:text-[25vh] leading-none text-murcia-dark" style="animation-direction: reverse;">
+            <div class="whitespace-nowrap animate-marquee font-display text-[18vh] md:text-[22vh] leading-none text-murcia-dark" style="animation-direction: reverse;">
                 BP 2027 BP 2027 BP 2027 BP 2027 BP 2027 BP 2027
             </div>
         </div>
 
-        <div class="relative z-10 text-center p-4 pt-10 md:pt-16 max-w-7xl mx-auto animate-float w-full">
-            <div class="inline-block mb-6 md:mb-10 mt-4 md:mt-6 relative">
-                <div class="absolute inset-0 bg-murcia-red translate-x-1 translate-y-1 md:translate-x-2 md:translate-y-2"></div>
-                <p class="relative text-murcia-dark font-bold tracking-[0.2em] md:tracking-[0.4em] uppercase text-[10px] md:text-base bg-white border-2 border-murcia-dark px-4 py-2 md:px-6 md:py-2">
+        <!-- Hero Content Center -->
+        <div class="relative z-10 text-center px-4 max-w-6xl mx-auto animate-float w-full my-auto flex flex-col items-center">
+            
+            <!-- Badge -->
+            <div class="inline-block mb-3 sm:mb-4 relative">
+                <div class="absolute inset-0 bg-murcia-red translate-x-1 translate-y-1"></div>
+                <p class="relative text-murcia-dark font-bold tracking-[0.2em] md:tracking-[0.3em] uppercase text-[10px] sm:text-xs md:text-sm bg-white border-2 border-murcia-dark px-3 py-1 sm:px-5 sm:py-1.5">
                     Torneo de Debate BP • 2027
                 </p>
             </div>
             
-            <h1 class="font-display text-6xl sm:text-8xl md:text-9xl lg:text-[11rem] leading-[0.9] tracking-tighter text-murcia-dark break-words">
+            <!-- Main Title -->
+            <h1 class="font-display text-5xl sm:text-7xl md:text-8xl lg:text-[7.5rem] xl:text-[8.5rem] leading-[0.88] tracking-tighter text-murcia-dark break-words">
                 XII BP<br>
                 <span class="text-stroke text-transparent hover:text-murcia-red transition-colors duration-500 cursor-default">MURCIA</span>
             </h1>
             
-            <p class="mt-6 md:mt-10 font-mono text-murcia-dark/70 text-sm md:text-xl max-w-xs md:max-w-2xl mx-auto uppercase tracking-wider bg-white/50 backdrop-blur-sm p-2">
+            <!-- Subtitle -->
+            <p class="mt-3 sm:mt-4 font-mono text-murcia-dark/75 text-xs sm:text-sm md:text-base max-w-xs sm:max-w-md md:max-w-xl mx-auto uppercase tracking-wider bg-white/60 backdrop-blur-sm px-3 py-1">
                 La XII edición está en camino... Prepárate para Murcia 2027.
             </p>
 
             <!-- Contador Regresivo 12 de Febrero 2027 -->
-            <div class="mt-6 md:mt-8 inline-flex flex-col items-center">
-                <div class="flex items-center gap-2 sm:gap-4 bg-white/90 backdrop-blur-sm p-3 md:p-4 border-2 md:border-4 border-murcia-dark shadow-[6px_6px_0px_0px_#D9291C]">
-                    <div class="flex flex-col items-center min-w-[50px] sm:min-w-[70px]">
-                        <span id="countdown-days" class="font-display text-2xl sm:text-4xl md:text-5xl text-murcia-dark leading-none">--</span>
-                        <span class="font-mono text-[9px] sm:text-xs uppercase tracking-widest text-gray-500 mt-1 font-bold">Días</span>
+            <div class="mt-4 sm:mt-5 inline-flex flex-col items-center">
+                <div class="flex items-center gap-1.5 sm:gap-3 md:gap-4 bg-white/95 backdrop-blur-sm p-2 sm:p-3 md:p-3.5 border-2 md:border-4 border-murcia-dark shadow-[4px_4px_0px_0px_#D9291C] sm:shadow-[6px_6px_0px_0px_#D9291C]">
+                    <div class="flex flex-col items-center min-w-[45px] sm:min-w-[60px] md:min-w-[68px]">
+                        <span id="countdown-days" class="font-display text-2xl sm:text-3xl md:text-4xl text-murcia-dark leading-none">--</span>
+                        <span class="font-mono text-[8px] sm:text-[10px] md:text-xs uppercase tracking-widest text-gray-500 mt-1 font-bold">Días</span>
                     </div>
-                    <span class="font-display text-2xl sm:text-3xl text-murcia-red leading-none pb-3">:</span>
-                    <div class="flex flex-col items-center min-w-[50px] sm:min-w-[70px]">
-                        <span id="countdown-hours" class="font-display text-2xl sm:text-4xl md:text-5xl text-murcia-dark leading-none">--</span>
-                        <span class="font-mono text-[9px] sm:text-xs uppercase tracking-widest text-gray-500 mt-1 font-bold">Horas</span>
+                    <span class="font-display text-xl sm:text-2xl md:text-3xl text-murcia-red leading-none pb-2 sm:pb-3">:</span>
+                    <div class="flex flex-col items-center min-w-[45px] sm:min-w-[60px] md:min-w-[68px]">
+                        <span id="countdown-hours" class="font-display text-2xl sm:text-3xl md:text-4xl text-murcia-dark leading-none">--</span>
+                        <span class="font-mono text-[8px] sm:text-[10px] md:text-xs uppercase tracking-widest text-gray-500 mt-1 font-bold">Horas</span>
                     </div>
-                    <span class="font-display text-2xl sm:text-3xl text-murcia-red leading-none pb-3">:</span>
-                    <div class="flex flex-col items-center min-w-[50px] sm:min-w-[70px]">
-                        <span id="countdown-minutes" class="font-display text-2xl sm:text-4xl md:text-5xl text-murcia-dark leading-none">--</span>
-                        <span class="font-mono text-[9px] sm:text-xs uppercase tracking-widest text-gray-500 mt-1 font-bold">Min</span>
+                    <span class="font-display text-xl sm:text-2xl md:text-3xl text-murcia-red leading-none pb-2 sm:pb-3">:</span>
+                    <div class="flex flex-col items-center min-w-[45px] sm:min-w-[60px] md:min-w-[68px]">
+                        <span id="countdown-minutes" class="font-display text-2xl sm:text-3xl md:text-4xl text-murcia-dark leading-none">--</span>
+                        <span class="font-mono text-[8px] sm:text-[10px] md:text-xs uppercase tracking-widest text-gray-500 mt-1 font-bold">Min</span>
                     </div>
-                    <span class="font-display text-2xl sm:text-3xl text-murcia-red leading-none pb-3">:</span>
-                    <div class="flex flex-col items-center min-w-[50px] sm:min-w-[70px]">
-                        <span id="countdown-seconds" class="font-display text-2xl sm:text-4xl md:text-5xl text-murcia-red leading-none">--</span>
-                        <span class="font-mono text-[9px] sm:text-xs uppercase tracking-widest text-murcia-red mt-1 font-bold">Seg</span>
+                    <span class="font-display text-xl sm:text-2xl md:text-3xl text-murcia-red leading-none pb-2 sm:pb-3">:</span>
+                    <div class="flex flex-col items-center min-w-[45px] sm:min-w-[60px] md:min-w-[68px]">
+                        <span id="countdown-seconds" class="font-display text-2xl sm:text-3xl md:text-4xl text-murcia-red leading-none">--</span>
+                        <span class="font-mono text-[8px] sm:text-[10px] md:text-xs uppercase tracking-widest text-murcia-red mt-1 font-bold">Seg</span>
                     </div>
                 </div>
-                <div class="flex flex-wrap items-center justify-center gap-3 mt-3">
-                    <span class="font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] text-gray-500 font-bold">
+                <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-2 sm:mt-2.5">
+                    <span class="font-mono text-[10px] sm:text-xs uppercase tracking-[0.15em] text-gray-500 font-bold">
                         12 de Febrero 2027 • Murcia
                     </span>
                     <span class="text-gray-300 hidden sm:inline">•</span>
-                    <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=XII+Torneo+de+Debate+BP+Ciudad+de+Murcia+2027&dates=20270212T080000Z/20270214T200000Z&details=XII+Edici%C3%B3n+del+Torneo+de+Debate+BP+Murcia+2027.+Web:+https://debateumu.github.io/BPMurcia/2027/&location=Murcia,+Espa%C3%B1a" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 font-mono text-[10px] sm:text-xs uppercase tracking-wider text-murcia-red font-bold hover:underline transition-all">
-                        <i class="ph-bold ph-calendar-plus text-sm"></i>
+                    <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=XII+Torneo+de+Debate+BP+Ciudad+de+Murcia+2027&dates=20270212T080000Z/20270214T200000Z&details=XII+Edici%C3%B3n+del+Torneo+de+Debate+BP+Murcia+2027.+Web:+https://debateumu.github.io/BPMurcia/2027/&location=Murcia,+Espa%C3%B1a" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 font-mono text-[10px] sm:text-xs uppercase tracking-wider text-murcia-red font-bold hover:underline transition-all">
+                        <i class="ph-bold ph-calendar-plus text-xs sm:text-sm"></i>
                         <span>Guardar en Calendario</span>
                     </a>
                 </div>
             </div>
         </div>
         
-        <div class="absolute bottom-4 md:bottom-6 z-30 animate-bounce-slow">
-            <a href="#registro-links" onclick="event.preventDefault(); document.getElementById('registro-links')?.scrollIntoView({ behavior: 'smooth' });" aria-label="Bajar a inscripciones" class="group flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-white border-4 border-murcia-dark shadow-[4px_4px_0px_0px_#D9291C] hover:shadow-[2px_2px_0px_0px_#D9291C] hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-murcia-red transition-all cursor-pointer">
-                <i class="ph-bold ph-arrow-down text-2xl md:text-3xl text-murcia-dark group-hover:text-white transition-colors"></i>
+        <!-- Flecha de Bajar (Siempre visible en el viewport sin solaparse) -->
+        <div class="relative z-20 pb-2 sm:pb-3 animate-bounce-slow mt-2">
+            <a href="#registro-links" onclick="event.preventDefault(); document.getElementById('registro-links')?.scrollIntoView({ behavior: 'smooth' });" aria-label="Bajar a inscripciones" class="group flex items-center justify-center w-11 h-11 md:w-12 md:h-12 bg-white border-3 md:border-4 border-murcia-dark shadow-[3px_3px_0px_0px_#D9291C] hover:shadow-[1px_1px_0px_0px_#D9291C] hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-murcia-red transition-all cursor-pointer">
+                <i class="ph-bold ph-arrow-down text-xl md:text-2xl text-murcia-dark group-hover:text-white transition-colors"></i>
             </a>
         </div>
     </header>
