@@ -156,7 +156,8 @@
                         'paper': '#f8f8f8',
                     },
                     animation: {
-                        'marquee': 'marquee 35s linear infinite',
+                        'marquee': 'marquee 45s linear infinite',
+                        'marquee-reverse': 'marquee-reverse 45s linear infinite',
                         'float': 'float 6s ease-in-out infinite',
                         'bounce-slow': 'bounce 2s infinite',
                         'pulse-mystery': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
@@ -165,7 +166,11 @@
                     keyframes: {
                         marquee: {
                             '0%': { transform: 'translateX(0%)' },
-                            '100%': { transform: 'translateX(-100%)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        },
+                        'marquee-reverse': {
+                            '0%': { transform: 'translateX(-50%)' },
+                            '100%': { transform: 'translateX(0%)' },
                         },
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
@@ -277,12 +282,19 @@
     </nav>
 
     <header class="relative min-h-[calc(100vh-5rem)] md:h-[calc(100vh-5rem)] flex flex-col justify-between items-center px-4 py-4 sm:py-6 md:py-6 overflow-hidden border-b-4 border-murcia-dark bg-white">
-        <div class="absolute inset-0 flex flex-col justify-between opacity-[0.04] md:opacity-[0.06] select-none pointer-events-none overflow-hidden">
-            <div class="whitespace-nowrap animate-marquee font-display text-[18vh] md:text-[22vh] leading-none text-murcia-dark">
-                DEBATE MURCIA DEBATE MURCIA DEBATE MURCIA DEBATE MURCIA DEBATE MURCIA
+        <!-- Marquesinas de Fondo Ultra-Fluidas (Sin Saltos) -->
+        <div class="absolute inset-0 flex flex-col justify-between opacity-[0.035] md:opacity-[0.05] select-none pointer-events-none overflow-hidden py-2">
+            <div class="flex overflow-hidden w-full">
+                <div class="animate-marquee flex whitespace-nowrap font-display text-[16vh] md:text-[20vh] leading-none text-murcia-dark">
+                    <span>DEBATE MURCIA • DEBATE MURCIA • DEBATE MURCIA • DEBATE MURCIA •&nbsp;</span>
+                    <span>DEBATE MURCIA • DEBATE MURCIA • DEBATE MURCIA • DEBATE MURCIA •&nbsp;</span>
+                </div>
             </div>
-            <div class="whitespace-nowrap animate-marquee font-display text-[18vh] md:text-[22vh] leading-none text-murcia-dark" style="animation-direction: reverse;">
-                BP 2027 BP 2027 BP 2027 BP 2027 BP 2027 BP 2027
+            <div class="flex overflow-hidden w-full">
+                <div class="animate-marquee-reverse flex whitespace-nowrap font-display text-[16vh] md:text-[20vh] leading-none text-murcia-dark">
+                    <span>BP 2027 • BP 2027 • BP 2027 • BP 2027 • BP 2027 • BP 2027 •&nbsp;</span>
+                    <span>BP 2027 • BP 2027 • BP 2027 • BP 2027 • BP 2027 • BP 2027 •&nbsp;</span>
+                </div>
             </div>
         </div>
 
@@ -352,16 +364,23 @@
         </div>
     </header>
 
+    <!-- Cinta Roja Marquesina Continua -->
     <div class="bg-murcia-red py-3 md:py-4 overflow-hidden border-b-4 border-murcia-dark relative z-20">
-        <div class="flex animate-marquee whitespace-nowrap">
-            <span class="text-white font-display text-base md:text-2xl mx-6 uppercase tracking-widest">• XII BP Murcia 2027 •</span>
-            <span class="text-stroke-white font-display text-base md:text-2xl mx-6 uppercase tracking-widest">• Próximamente Más Info •</span>
-            <span class="text-white font-display text-base md:text-2xl mx-6 uppercase tracking-widest">• Equipo Académico en Selección •</span>
-            <span class="text-stroke-white font-display text-base md:text-2xl mx-6 uppercase tracking-widest">• Save The Date •</span>
-            <span class="text-white font-display text-base md:text-2xl mx-6 uppercase tracking-widest">• XII BP Murcia 2027 •</span>
-            <span class="text-stroke-white font-display text-base md:text-2xl mx-6 uppercase tracking-widest">• Próximamente Más Info •</span>
-            <span class="text-white font-display text-base md:text-2xl mx-6 uppercase tracking-widest">• Equipo Académico en Selección •</span>
-            <span class="text-stroke-white font-display text-base md:text-2xl mx-6 uppercase tracking-widest">• Save The Date •</span>
+        <div class="flex overflow-hidden w-full">
+            <div class="animate-marquee flex whitespace-nowrap">
+                <div class="flex whitespace-nowrap items-center font-display text-base md:text-2xl uppercase tracking-widest text-white">
+                    <span class="mx-6">• XII BP Murcia 2027 •</span>
+                    <span class="text-stroke-white mx-6">• Próximamente Más Info •</span>
+                    <span class="mx-6">• Equipo Académico en Selección •</span>
+                    <span class="text-stroke-white mx-6">• Save The Date •</span>
+                </div>
+                <div class="flex whitespace-nowrap items-center font-display text-base md:text-2xl uppercase tracking-widest text-white">
+                    <span class="mx-6">• XII BP Murcia 2027 •</span>
+                    <span class="text-stroke-white mx-6">• Próximamente Más Info •</span>
+                    <span class="mx-6">• Equipo Académico en Selección •</span>
+                    <span class="text-stroke-white mx-6">• Save The Date •</span>
+                </div>
+            </div>
         </div>
     </div>
 
