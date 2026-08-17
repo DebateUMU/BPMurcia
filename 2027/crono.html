@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timer BP Murcia 2026</title>
+    <title>Timer BP Murcia 2027</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⏱️</text></svg>">
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -30,7 +30,6 @@
                     },
                     animation: {
                         'flash-alarm': 'flash 0.5s infinite',
-                        // 'pulse-fast': 'pulse 0.5s cubic-bezier(0.4, 0, 0.6, 1) infinite', // Eliminada para evitar parpadeo
                     },
                     keyframes: {
                         flash: {
@@ -52,7 +51,6 @@
         
         * { border-radius: 0 !important; }
         
-        /* Brutalist Shadow Utility */
         .shadow-hard { box-shadow: 6px 6px 0px 0px currentColor; }
         .shadow-hard-sm { box-shadow: 4px 4px 0px 0px currentColor; }
         
@@ -75,7 +73,6 @@
             box-shadow: 2px 2px 0px 0px currentColor;
         }
         
-        /* Estilo para el botón pequeño */
         .btn-small {
             border: 2px solid currentColor;
             box-shadow: 3px 3px 0px 0px currentColor;
@@ -91,7 +88,6 @@
             font-size: 2rem;
         }
 
-        /* Toggle Styles */
         .toggle-checkbox { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
         .toggle-track { position: relative; display: inline-block; width: 64px; height: 36px; background-color: #e0e0e0; border: 3px solid #0f0f0f; transition: all 0.3s ease; }
         .toggle-thumb { position: absolute; top: 50%; transform: translateY(-50%); left: 4px; height: 22px; width: 22px; background-color: #0f0f0f; transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); }
@@ -259,12 +255,11 @@
                 <audio id="alarmAudio" src="audio/alarma.mp3" preload="auto"></audio>
             </div>
             
-            <div class="mt-auto pt-8 border-t-4 border-current opacity-40 text-center font-mono text-xs uppercase tracking-widest">BP Murcia 2026</div>
+            <div class="mt-auto pt-8 border-t-4 border-current opacity-40 text-center font-mono text-xs uppercase tracking-widest">BP Murcia 2027</div>
         </div>
     </div>
 
     <script>
-        // DOM Elements
         const hVal = document.getElementById('hVal');
         const mVal = document.getElementById('mVal');
         const sVal = document.getElementById('sVal');
@@ -280,16 +275,14 @@
         const modeLabel = document.getElementById('modeLabel');
         const alarmAudio = document.getElementById('alarmAudio');
         
-        // Settings Toggles
         const optionsModal = document.getElementById('optionsModal');
         const darkModeToggle = document.getElementById('darkModeToggle');
         const muteToggle = document.getElementById('muteToggle');
         const courtesyToggle = document.getElementById('courtesyToggle');
         const stopwatchToggle = document.getElementById('stopwatchToggle');
 
-        // State Variables
         let isMuted = false;
-        let isCourtesyMode = true; // Por defecto true para debate
+        let isCourtesyMode = true;
         let isStopwatchMode = false;
         let isRunning = false;
         let timerInterval;
@@ -297,9 +290,8 @@
         
         let inputBuffer = "";
         let totalSeconds = 0;
-        let initialSeconds = 0; // Guardamos el tiempo original para el Reset BP
+        let initialSeconds = 0;
 
-        // --- MENU & SETTINGS ---
         document.getElementById('menuToggleBtn').addEventListener('click', () => optionsModal.classList.remove('hidden'));
         document.getElementById('menuCloseBtn').addEventListener('click', () => optionsModal.classList.add('hidden'));
         
@@ -309,18 +301,16 @@
 
         stopwatchToggle.addEventListener('change', (e) => {
             isStopwatchMode = e.target.checked;
-            fullReset(); // Reset completo al cambiar de modo
+            fullReset();
             
             if (isStopwatchMode) {
-                // Modo Cronómetro
                 setupPanel.classList.add('hidden');
                 timerControls.classList.remove('hidden');
-                changeTimeBtn.classList.add('hidden'); // No necesario en cronómetro
+                changeTimeBtn.classList.add('hidden');
                 modeLabel.classList.remove('hidden');
                 totalSeconds = 0;
                 updateDisplay(0);
             } else {
-                // Modo Timer
                 setupPanel.classList.remove('hidden');
                 timerControls.classList.add('hidden');
                 changeTimeBtn.classList.add('hidden');
@@ -350,7 +340,6 @@
             }
         }
 
-        // --- LOGIC: NUMPAD INPUT ---
         function updateDisplayFromBuffer() {
             let padded = inputBuffer.padStart(6, '0');
             hVal.innerText = padded.slice(0, 2);
@@ -370,53 +359,42 @@
             inputBuffer = "";
             updateDisplayFromBuffer();
         }
-
-        // --- LOGIC: TIMER CONTROL ---
         
-        // 1. SET TIMER (Confirma el tiempo ingresado)
         function setTimer() {
             if (inputBuffer.length === 0) return;
             
-            // Parse inputs
             let padded = inputBuffer.padStart(6, '0');
             let h = parseInt(padded.slice(0, 2));
             let m = parseInt(padded.slice(2, 4));
             let s = parseInt(padded.slice(4, 6));
 
             totalSeconds = (h * 3600) + (m * 60) + s;
-            initialSeconds = totalSeconds; // GUARDA EL TIEMPO ORIGINAL
+            initialSeconds = totalSeconds;
 
             if (totalSeconds > 0) {
                 setupPanel.classList.add('hidden');
                 timerControls.classList.remove('hidden');
-                changeTimeBtn.classList.remove('hidden'); // Muestra botón "Cambiar Tiempo"
+                changeTimeBtn.classList.remove('hidden');
             }
         }
 
-        // 2. CAMBIAR TIEMPO (Vuelve al teclado numérico)
         function changeTime() {
-            // Detener todo
             stopInternalTimer();
             cleanupAlarmState();
 
-            // UI Changes
             timerControls.classList.add('hidden');
             changeTimeBtn.classList.add('hidden');
             setupPanel.classList.remove('hidden');
             
-            // Opcional: Borrar buffer o mantenerlo? Lo borramos para fresh start
             inputBuffer = ""; 
             updateDisplayFromBuffer();
         }
 
-        // 3. START / STOP
         function toggleStartStop() {
             if (isRunning) {
-                // PAUSE
                 clearInterval(timerInterval);
                 isRunning = false;
                 
-                // UI Button Style
                 btnText.innerText = "Resume";
                 playIcon.classList.replace('ph-pause', 'ph-play');
                 startStopBtn.classList.replace('bg-murcia-dark', 'bg-green-600');
@@ -424,32 +402,26 @@
                 startStopBtn.classList.remove('text-white', 'text-murcia-dark'); 
                 startStopBtn.classList.add('text-white');
                 
-                // Stop Sounds/Animations if active
                 if (courtesyInterval) clearInterval(courtesyInterval);
                 alarmAudio.pause();
                 
             } else {
-                // START
                 isRunning = true;
                 
-                // UI Button Style
                 btnText.innerText = "Pause";
                 playIcon.classList.replace('ph-play', 'ph-pause');
                 startStopBtn.classList.remove('bg-green-600', 'text-white');
                 startStopBtn.classList.add('bg-murcia-dark', 'text-white', 'dark:bg-paper', 'dark:text-murcia-dark');
 
-                // Interval Logic
                 timerInterval = setInterval(() => {
                     if (isStopwatchMode) {
                         totalSeconds++;
                         updateDisplay(totalSeconds);
                     } else {
-                        // Timer Mode
                         if (totalSeconds > 0) {
                             totalSeconds--;
                             updateDisplay(totalSeconds);
                         } else {
-                            // TIME IS UP
                             clearInterval(timerInterval);
                             triggerAlarmLogic();
                         }
@@ -458,12 +430,10 @@
             }
         }
 
-        // 4. RESET (Solo reinicia el contador, mantiene configuración)
         function resetTimer() {
             stopInternalTimer();
             cleanupAlarmState();
 
-            // Restaurar UI del botón Play
             btnText.innerText = "Start";
             playIcon.classList.replace('ph-pause', 'ph-play');
             startStopBtn.classList.remove('bg-murcia-dark', 'dark:bg-paper', 'dark:text-murcia-dark');
@@ -473,21 +443,16 @@
                 totalSeconds = 0;
                 updateDisplay(0);
             } else {
-                // MODO TIMER: Vuelve al 'initialSeconds', NO al teclado
                 totalSeconds = initialSeconds;
                 updateDisplay(initialSeconds);
-                // timerControls se mantiene visible
-                // changeTimeBtn se mantiene visible
             }
         }
         
-        // Helper: Detiene el intervalo y estado de running
         function stopInternalTimer() {
             clearInterval(timerInterval);
             isRunning = false;
         }
 
-        // Helper: Limpia estados de alarma y cortesía
         function cleanupAlarmState() {
             clearInterval(courtesyInterval);
             courtesyOverlay.classList.add('hidden');
@@ -495,7 +460,6 @@
             alarmAudio.currentTime = 0;
         }
 
-        // Helper: Full Reset (usado al cambiar de modo timer/stopwatch)
         function fullReset() {
             stopInternalTimer();
             cleanupAlarmState();
@@ -514,15 +478,12 @@
             sVal.innerText = String(s).padStart(2, '0');
         }
 
-        // --- ALARMA & CORTESÍA ---
         function triggerAlarmLogic() {
-            // 1. Audio
             if (!isMuted) {
                 alarmAudio.loop = true;
                 alarmAudio.play().catch(e => console.log(e));
             }
 
-            // 2. Cortesía Visual (Overlay Gigante)
             if (isCourtesyMode) {
                 let cTime = 15;
                 courtesyOverlay.classList.remove('hidden');
@@ -533,16 +494,10 @@
                     courtesyBigCount.innerText = cTime;
                     if (cTime <= 0) {
                         clearInterval(courtesyInterval);
-                        // Al acabar cortesía, paramos el sonido y ocultamos overlay?
-                        // O lo dejamos parpadeando en 0? 
-                        // Generalmente en debate se para.
                         alarmAudio.pause();
                         courtesyOverlay.classList.add('hidden');
                     }
                 }, 1000);
-            } else {
-                // Si no hay cortesía, parpadeo simple del body
-                // mainBody.classList.add('alarm-state'); // Opcional si quieres mantener el flash antiguo
             }
         }
     </script>

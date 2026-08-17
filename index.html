@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BP Murcia | Torneo de Debate</title>
+    <meta name="description" content="Plataforma oficial del Torneo de Debate BP Ciudad de Murcia. Acceso a las ediciones y cronómetro oficial.">
+    <link rel="icon" href="2026/img/BPMurcia2026.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['"Archivo Black"', 'sans-serif'],
+                        'body': ['"Space Grotesk"', 'sans-serif'],
+                    },
+                    colors: {
+                        'murcia-red': '#D9291C',
+                        'murcia-dark': '#0f0f0f',
+                        'murcia-pastel': '#FCE7E7',
+                        'paper': '#f8f8f8',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * { border-radius: 0 !important; }
+        .shadow-hard { box-shadow: 8px 8px 0px 0px #D9291C; }
+        .shadow-hard-dark { box-shadow: 8px 8px 0px 0px #0f0f0f; }
+        .text-stroke { -webkit-text-stroke: 1px #0f0f0f; color: transparent; }
+    </style>
+</head>
+<body class="font-body bg-paper text-murcia-dark min-h-screen flex flex-col justify-between selection:bg-murcia-red selection:text-white">
+
+    <header class="p-6 md:p-10 border-b-4 border-murcia-dark bg-white">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <span class="font-display text-2xl md:text-3xl tracking-tight text-murcia-dark">
+                BP <span class="text-murcia-red">MURCIA</span>
+            </span>
+            <span class="font-mono text-xs uppercase tracking-widest bg-murcia-dark text-white px-3 py-1">
+                Portal Oficial
+            </span>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-12 md:py-20 flex-grow w-full flex flex-col justify-center">
+        
+        <div class="mb-12 text-center">
+            <h1 class="font-display text-5xl sm:text-7xl md:text-8xl uppercase leading-none mb-4">
+                Ediciones <span class="text-stroke hover:text-murcia-red transition-colors cursor-default">BP Murcia</span>
+            </h1>
+            <p class="font-mono text-sm md:text-lg uppercase tracking-wider text-gray-600 max-w-xl mx-auto">
+                Selecciona la edición del torneo o accede directamente al temporizador oficial.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto w-full">
+            
+            <!-- Tarjeta 2027 -->
+            <div class="relative bg-white border-4 border-murcia-dark p-8 shadow-hard hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="bg-murcia-red text-white font-mono text-xs uppercase tracking-widest px-3 py-1 font-bold">Próxima Edición</span>
+                        <i class="ph-bold ph-calendar-plus text-3xl text-murcia-red"></i>
+                    </div>
+                    <h2 class="font-display text-4xl uppercase mb-2">BP Murcia 2027</h2>
+                    <p class="font-body text-gray-600 mb-6 text-sm">XII Torneo de Debate BP Ciudad de Murcia. Fechas e información en preparación.</p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t-2 border-gray-100">
+                    <a href="2027/" class="flex-1 text-center bg-murcia-dark text-white py-3 px-4 font-display uppercase text-sm hover:bg-murcia-red transition-colors">
+                        Ver Web 2027
+                    </a>
+                    <a href="2027/crono.html" class="text-center border-2 border-murcia-dark py-3 px-4 font-display uppercase text-sm hover:bg-murcia-pastel hover:text-murcia-red transition-colors">
+                        Timer ⏱️
+                    </a>
+                </div>
+            </div>
+
+            <!-- Tarjeta 2026 -->
+            <div class="relative bg-white border-4 border-murcia-dark p-8 shadow-hard-dark hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-start mb-6">
+                        <span class="bg-murcia-dark text-white font-mono text-xs uppercase tracking-widest px-3 py-1">Edición XI</span>
+                        <i class="ph-bold ph-trophy text-3xl text-murcia-dark"></i>
+                    </div>
+                    <h2 class="font-display text-4xl uppercase mb-2">BP Murcia 2026</h2>
+                    <p class="font-body text-gray-600 mb-6 text-sm">XI Torneo de Debate BP Ciudad de Murcia. Equipos, adjudicación y cuadro de honor.</p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t-2 border-gray-100">
+                    <a href="2026/" class="flex-1 text-center bg-murcia-dark text-white py-3 px-4 font-display uppercase text-sm hover:bg-murcia-red transition-colors">
+                        Ver Web 2026
+                    </a>
+                    <a href="2026/crono.html" class="text-center border-2 border-murcia-dark py-3 px-4 font-display uppercase text-sm hover:bg-murcia-pastel hover:text-murcia-red transition-colors">
+                        Timer ⏱️
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="p-6 md:p-8 bg-black text-white border-t-4 border-murcia-red">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
+            <div class="font-mono text-xs uppercase tracking-widest text-gray-400">
+                Club de Debate Universidad de Murcia • Debate UMU
+            </div>
+            <div class="flex gap-6 font-mono text-xs uppercase tracking-widest">
+                <a href="https://instagram.com/bpmurcia2026" target="_blank" class="hover:text-murcia-red transition-colors">Instagram Torneo</a>
+                <a href="https://instagram.com/clubdedebateum" target="_blank" class="hover:text-murcia-red transition-colors">Club de Debate</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
