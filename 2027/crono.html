@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Timer BP Murcia 2027</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⏱️</text></svg>">
+    <link rel="icon" href="img/LogoBPMurcia2027.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -51,6 +51,13 @@
         
         * { border-radius: 0 !important; }
         
+        html, body {
+            cursor: url('img/cursor-32.png') 0 0, auto;
+        }
+        a, button, [role="button"], input, select, textarea, .cursor-pointer, .btn-main, .btn-small, .btn-numpad {
+            cursor: url('img/cursor-32.png') 0 0, pointer;
+        }
+
         .shadow-hard { box-shadow: 6px 6px 0px 0px currentColor; }
         .shadow-hard-sm { box-shadow: 4px 4px 0px 0px currentColor; }
         
@@ -112,7 +119,7 @@
 
     <header class="flex justify-between items-center p-6 border-b-4 border-murcia-dark dark:border-paper bg-white dark:bg-murcia-dark z-20 relative shrink-0 transition-colors duration-300">
         <a href="index.html" class="w-32 md:w-48 block hover:opacity-80 transition-opacity">
-            <img src="img/BPMurcia2026.png" onerror="this.onerror=null; this.src='https://placehold.co/200x80/D9291C/FFFFFF?text=BP+MURCIA&font=roboto'" alt="Logo BP Murcia" class="w-full h-auto">
+            <img src="img/LogoBPMurcia2027.png" onerror="this.onerror=null; this.src='img/BPMurcia2026.png'" alt="Logo BP Murcia 2027" class="w-full h-auto">
         </a>
         
         <div class="flex items-center gap-6">
