@@ -245,6 +245,33 @@
             mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
             -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
         }
+
+        @keyframes floatUpHeart {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, 0) scale(0.6) rotate(0deg);
+            }
+            50% {
+                opacity: 0.95;
+                transform: translate(calc(-50% + var(--dx, 0px)), -35px) scale(1.25) rotate(var(--rot, 12deg));
+            }
+            100% {
+                opacity: 0;
+                transform: translate(calc(-50% + var(--dx, 0px)), -80px) scale(1.5) rotate(var(--rot, -15deg));
+            }
+        }
+        .floating-heart {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            pointer-events: none;
+            user-select: none;
+            animation: floatUpHeart 1.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            z-index: 100;
+            font-size: 1.25rem;
+            line-height: 1;
+            filter: drop-shadow(0 2px 4px rgba(217, 41, 28, 0.4));
+        }
     </style>
 </head>
 <body class="font-body antialiased selection:bg-murcia-red selection:text-white pt-20">
@@ -345,7 +372,7 @@
                 </div>
                 <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-2 sm:mt-2.5">
                     <span class="font-mono text-[10px] sm:text-xs uppercase tracking-[0.15em] text-gray-500 font-bold">
-                        12 de Febrero 2027 • Murcia
+                        12 AL <span id="valentin-14" class="relative inline-block text-murcia-red font-black cursor-pointer px-1 py-0.5 hover:bg-murcia-pastel border border-transparent hover:border-murcia-red transition-all select-none group" title="San Valentín ❤️">14</span> DE FEBRERO 2027 • MURCIA
                     </span>
                     <span class="text-gray-300 hidden sm:inline">•</span>
                     <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=XII+Torneo+de+Debate+BP+Ciudad+de+Murcia+2027&dates=20270212T080000Z/20270214T200000Z&details=XII+Edici%C3%B3n+del+Torneo+de+Debate+BP+Murcia+2027.+Web:+https://debateumu.github.io/BPMurcia/2027/&location=Murcia,+Espa%C3%B1a" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 font-mono text-[10px] sm:text-xs uppercase tracking-wider text-murcia-red font-bold hover:underline transition-all">
@@ -823,6 +850,30 @@
 
             updateCountdown();
             setInterval(updateCountdown, 1000);
+
+            // Easter Egg San Valentín: Corazón flotante al interactuar con el 14
+            const valentinTrigger = document.getElementById('valentin-14');
+            if (valentinTrigger) {
+                const triggerHeart = () => {
+                    const heart = document.createElement('span');
+                    heart.className = 'floating-heart';
+                    const emojis = ['❤️', '💖', '💘', '💕', '✨'];
+                    heart.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                    
+                    const dx = (Math.random() * 40 - 20) + 'px';
+                    const rot = (Math.random() * 30 - 15) + 'deg';
+                    heart.style.setProperty('--dx', dx);
+                    heart.style.setProperty('--rot', rot);
+                    
+                    valentinTrigger.appendChild(heart);
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 1300);
+                };
+
+                valentinTrigger.addEventListener('mouseenter', triggerHeart);
+                valentinTrigger.addEventListener('click', triggerHeart);
+            }
         });
     </script>
 </body>
