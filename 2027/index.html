@@ -393,48 +393,62 @@
                 <span class="font-mono text-xs uppercase tracking-widest text-gray-400 mt-4 md:mt-0">Edición 2027</span>
             </div>
 
-            <div class="max-w-2xl mx-auto">
-                <div class="border-4 border-murcia-dark bg-white relative p-8 md:p-12 shadow-[8px_8px_0px_0px_#0f0f0f] select-none">
-                    <div class="flex justify-between items-start mb-8 md:mb-10">
-                        <div class="bg-murcia-red text-white px-3 py-1.5 font-mono text-xs uppercase tracking-widest font-bold flex items-center gap-2">
-                            <i class="ph-bold ph-lock-key"></i>
-                            <span>Próximamente</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- Tarjeta 1: Inscripciones (Próximamente) -->
+                <div class="border-4 border-murcia-dark bg-white relative p-6 sm:p-8 md:p-10 shadow-[8px_8px_0px_0px_#0f0f0f] select-none flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-start mb-6 md:mb-8">
+                            <div class="bg-murcia-red text-white px-3 py-1.5 font-mono text-xs uppercase tracking-widest font-bold flex items-center gap-2">
+                                <i class="ph-bold ph-lock-key"></i>
+                                <span>Próximamente</span>
+                            </div>
+                            
+                            <!-- Logo Tiempo Simple y Minimalista -->
+                            <div class="w-12 h-12 bg-murcia-pastel border-2 sm:border-4 border-murcia-dark shadow-[3px_3px_0px_0px_#D9291C] flex items-center justify-center text-murcia-red">
+                                <i class="ph-bold ph-hourglass text-2xl animate-hourglass"></i>
+                            </div>
                         </div>
-                        
-                        <!-- Logo Reloj de Arena Neo-Brutalista -->
-                        <div class="w-14 h-14 sm:w-16 sm:h-16 bg-murcia-pastel border-2 sm:border-4 border-murcia-dark shadow-[4px_4px_0px_0px_#D9291C] flex items-center justify-center">
-                            <svg class="w-8 h-8 sm:w-9 sm:h-9 animate-hourglass origin-center" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <!-- Base superior e inferior -->
-                                <rect x="8" y="5" width="32" height="4" fill="#0f0f0f"/>
-                                <rect x="8" y="39" width="32" height="4" fill="#0f0f0f"/>
-                                
-                                <!-- Cuerpo de Cristal -->
-                                <path d="M12 9C12 18 20 22 24 24C20 26 12 30 12 39H36C36 30 28 26 24 24C28 22 36 18 36 9H12Z" fill="#ffffff" stroke="#0f0f0f" stroke-width="3" stroke-linejoin="round"/>
-                                
-                                <!-- Arena Superior -->
-                                <path d="M15 11C15 17 21 21 24 23C27 21 33 17 33 11H15Z" fill="#D9291C"/>
-                                
-                                <!-- Hilo de Arena Cayendo -->
-                                <line x1="24" y1="23" x2="24" y2="35" stroke="#D9291C" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="2 2" class="animate-pulse"/>
-                                
-                                <!-- Montículo de Arena Inferior -->
-                                <path d="M16 37C17 33 21 32 24 32C27 32 31 33 32 37H16Z" fill="#D9291C"/>
-                                
-                                <!-- Reflejo de cristal -->
-                                <path d="M16 13C16 16 18 19 20 21" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" opacity="0.9"/>
-                            </svg>
+                        <div>
+                            <h3 class="font-display text-2xl sm:text-3xl md:text-4xl uppercase mb-3 leading-none text-murcia-dark">
+                                Inscripción<br>Equipos & Jueces
+                            </h3>
+                            <p class="font-mono text-xs md:text-sm text-gray-500 uppercase tracking-wider mt-5 border-t-2 border-gray-200 pt-4 leading-relaxed">
+                                El periodo de inscripción oficial abrirá próximamente. Permanece atento a nuestras redes para asegurar tu plaza en el torneo.
+                            </p>
                         </div>
                     </div>
-                    <div>
-                        <h3 class="font-display text-3xl md:text-5xl uppercase mb-3 leading-none text-murcia-dark">Inscripción<br>Equipos & Jueces</h3>
-                        <p class="font-mono text-xs md:text-sm text-gray-500 uppercase tracking-wider mt-6 border-t-2 border-gray-200 pt-4 leading-relaxed">
-                            El periodo de inscripción oficial abrirá próximamente. Permanece atento a nuestras redes sociales para asegurar tu plaza en el torneo.
-                        </p>
-                        <p class="font-mono text-[10px] text-gray-400 mt-4">
-                            🔒 Los datos recogidos se tratarán conforme al RGPD/LOPDGDD para la gestión del torneo. Consulta nuestro <a href="../legal.html" class="underline hover:text-murcia-red transition-colors font-bold">Aviso Legal y Privacidad</a>.
-                        </p>
+                    <div class="mt-8 pt-4 border-t-2 border-gray-100 flex items-center gap-2 text-gray-400 font-mono text-xs uppercase tracking-wider">
+                        <i class="ph-bold ph-clock"></i>
+                        <span>Apertura por anunciar</span>
                     </div>
                 </div>
+
+                <!-- Tarjeta 2: Tarifas & Precios (?) -->
+                <a href="precios.html" class="link-card block border-4 border-murcia-dark bg-white relative p-6 sm:p-8 md:p-10 shadow-[8px_8px_0px_0px_#D9291C] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all group flex flex-col justify-between cursor-pointer">
+                    <div>
+                        <div class="flex justify-between items-start mb-6 md:mb-8">
+                            <div class="bg-murcia-dark text-white px-3 py-1.5 font-mono text-xs uppercase tracking-widest font-bold flex items-center gap-2 group-hover:bg-murcia-red transition-colors">
+                                <i class="ph-bold ph-tag"></i>
+                                <span>Tarifas (?)</span>
+                            </div>
+                            <div class="w-12 h-12 bg-white border-2 sm:border-4 border-murcia-dark shadow-[3px_3px_0px_0px_#0f0f0f] flex items-center justify-center text-murcia-dark group-hover:text-murcia-red group-hover:border-murcia-red transition-colors">
+                                <i class="ph-bold ph-arrow-up-right text-2xl"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-display text-2xl sm:text-3xl md:text-4xl uppercase mb-3 leading-none text-murcia-dark group-hover:text-murcia-red transition-colors">
+                                Tarifas &<br>Precios (?)
+                            </h3>
+                            <p class="font-mono text-xs md:text-sm text-gray-500 uppercase tracking-wider mt-5 border-t-2 border-gray-200 pt-4 leading-relaxed">
+                                Consulta la información de precios y costes estimados de inscripción para debatientes y personas juzgadoras.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-8 pt-4 border-t-2 border-gray-100 flex items-center justify-between font-mono text-xs uppercase tracking-wider font-bold text-murcia-red group-hover:underline">
+                        <span>Ver Precios & Tarifas</span>
+                        <i class="ph-bold ph-arrow-right text-base"></i>
+                    </div>
+                </a>
             </div>
         </section>
 

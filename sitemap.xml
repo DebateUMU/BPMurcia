@@ -23,9 +23,17 @@
     <!-- Temporizador Oficial 2027 -->
     <url>
         <loc>https://debateumu.github.io/BPMurcia/2027/crono.html</loc>
-        <lastmod>2026-08-17</lastmod>
+        <lastmod>2026-08-18</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
+    </url>
+
+    <!-- Tarifas & Precios 2027 -->
+    <url>
+        <loc>https://debateumu.github.io/BPMurcia/2027/precios.html</loc>
+        <lastmod>2026-08-18</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
     </url>
 
     <!-- Aviso Legal & Política de Privacidad -->
