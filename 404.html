@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Moción No Encontrada | Torneo de Debate BP Murcia</title>
+    <meta name="description" content="Página no encontrada (Error 404) - Torneo de Debate BP Ciudad de Murcia.">
+    <meta name="robots" content="noindex, follow">
+    <meta name="theme-color" content="#D9291C">
+
+    <!-- Resolución dinámica de ruta base para GitHub Pages -->
+    <script>
+        (function() {
+            var isGitHubProject = window.location.pathname.startsWith('/BPMurcia');
+            var baseHref = isGitHubProject ? '/BPMurcia/' : '/';
+            var baseEl = document.createElement('base');
+            baseEl.href = baseHref;
+            document.head.appendChild(baseEl);
+        })();
+    </script>
+
+    <link rel="icon" href="2027/img/LogoBPMurcia2027.png">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fuentes Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'display': ['"Archivo Black"', 'sans-serif'],
+                        'body': ['"Space Grotesk"', 'sans-serif'],
+                    },
+                    colors: {
+                        'murcia-red': '#D9291C',
+                        'murcia-dark': '#0f0f0f',
+                        'murcia-pastel': '#FCE7E7',
+                        'paper': '#f8f8f8',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * { border-radius: 0 !important; }
+        .shadow-hard { box-shadow: 8px 8px 0px 0px #D9291C; }
+        .shadow-hard-dark { box-shadow: 8px 8px 0px 0px #0f0f0f; }
+        .text-stroke { -webkit-text-stroke: 2px #0f0f0f; color: transparent; }
+        
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="font-body bg-paper text-murcia-dark min-h-screen flex flex-col justify-between selection:bg-murcia-red selection:text-white">
+
+    <div class="noise-overlay"></div>
+
+    <!-- Header -->
+    <header class="p-6 md:p-8 border-b-4 border-murcia-dark bg-white">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="./" class="font-display text-2xl md:text-3xl tracking-tight text-murcia-dark hover:opacity-80 transition-opacity flex items-center gap-3">
+                <span>BP <span class="text-murcia-red">MURCIA</span></span>
+            </a>
+            <span class="font-mono text-xs uppercase tracking-widest bg-murcia-red text-white px-3 py-1 font-bold">
+                Error 404
+            </span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-6 py-12 md:py-16 flex-grow w-full flex flex-col justify-center">
+        
+        <div class="bg-white border-4 border-murcia-dark p-8 md:p-12 shadow-hard">
+            
+            <!-- Etiqueta superior -->
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-6 pb-6 border-b-2 border-gray-100">
+                <div class="flex items-center gap-2">
+                    <span class="inline-block w-3 h-3 bg-murcia-red animate-ping"></span>
+                    <span class="font-mono text-xs md:text-sm font-bold uppercase tracking-widest text-murcia-red">
+                        Punto de Información Rechazado
+                    </span>
+                </div>
+                <span class="font-mono text-xs uppercase tracking-wider bg-gray-100 text-gray-700 px-3 py-1 border border-gray-300">
+                    HTTP 404 • Not Found
+                </span>
+            </div>
+
+            <!-- Gran 404 y Moción -->
+            <div class="mb-8">
+                <div class="flex items-baseline gap-4 mb-2">
+                    <span class="font-display text-7xl sm:text-8xl md:text-9xl text-murcia-red leading-none">404</span>
+                    <span class="font-display text-4xl sm:text-6xl md:text-7xl text-stroke leading-none">ERROR</span>
+                </div>
+                
+                <h1 class="font-display text-2xl sm:text-4xl uppercase leading-tight mb-4 text-murcia-dark">
+                    Esta moción no existe en el debate
+                </h1>
+                
+                <p class="font-body text-gray-700 text-base md:text-lg mb-4">
+                    La página que estás buscando ha sido impugnada por la adjudicación, ha cambiado de sala o nunca fue liberada en la ronda.
+                </p>
+
+                <!-- URL solicitada -->
+                <div class="bg-gray-50 border-2 border-dashed border-gray-300 p-3 font-mono text-xs md:text-sm text-gray-600 break-all">
+                    <span class="text-murcia-red font-bold">Ruta no encontrada:</span> <span id="requested-path">cargando...</span>
+                </div>
+            </div>
+
+            <!-- Acciones Principales -->
+            <div class="flex flex-col sm:flex-row gap-4 mb-10">
+                <a href="./" class="flex-1 text-center bg-murcia-dark text-white py-4 px-6 font-display uppercase text-sm md:text-base hover:bg-murcia-red transition-all flex items-center justify-center gap-2 shadow-hard hover:translate-x-[-2px] hover:translate-y-[-2px]">
+                    <i class="ph-bold ph-house text-xl"></i>
+                    <span>Volver al Portal Principal</span>
+                </a>
+                
+                <button onclick="window.history.length > 1 ? window.history.back() : window.location.href='./'" class="border-3 border-murcia-dark bg-white py-4 px-6 font-display uppercase text-sm md:text-base hover:bg-murcia-pastel hover:text-murcia-red transition-colors flex items-center justify-center gap-2">
+                    <i class="ph-bold ph-arrow-left text-xl"></i>
+                    <span>Página Anterior</span>
+                </button>
+            </div>
+
+            <!-- Enlaces directos a secciones clave -->
+            <div class="pt-8 border-t-2 border-gray-100">
+                <h2 class="font-mono text-xs font-bold uppercase tracking-widest text-gray-500 mb-4">
+                    Salas y enlaces disponibles:
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                    
+                    <a href="2027/" class="p-3 border-2 border-gray-200 hover:border-murcia-dark hover:bg-gray-50 transition-colors group">
+                        <div class="font-display text-sm text-murcia-dark group-hover:text-murcia-red transition-colors flex items-center justify-between">
+                            <span>BP Murcia 2027</span>
+                            <i class="ph-bold ph-arrow-up-right"></i>
+                        </div>
+                        <div class="font-mono text-xs text-gray-500 mt-1">XII Torneo Oficial</div>
+                    </a>
+
+                    <a href="2027/crono.html" class="p-3 border-2 border-gray-200 hover:border-murcia-dark hover:bg-gray-50 transition-colors group">
+                        <div class="font-display text-sm text-murcia-dark group-hover:text-murcia-red transition-colors flex items-center justify-between">
+                            <span>Temporizador BP</span>
+                            <i class="ph-bold ph-clock"></i>
+                        </div>
+                        <div class="font-mono text-xs text-gray-500 mt-1">Cronómetro con campanas</div>
+                    </a>
+
+                    <a href="2027/precios.html" class="p-3 border-2 border-gray-200 hover:border-murcia-dark hover:bg-gray-50 transition-colors group">
+                        <div class="font-display text-sm text-murcia-dark group-hover:text-murcia-red transition-colors flex items-center justify-between">
+                            <span>Tarifas e Inscripción</span>
+                            <i class="ph-bold ph-ticket"></i>
+                        </div>
+                        <div class="font-mono text-xs text-gray-500 mt-1">Edición 2027</div>
+                    </a>
+
+                    <a href="2026/" class="p-3 border-2 border-gray-200 hover:border-murcia-dark hover:bg-gray-50 transition-colors group">
+                        <div class="font-display text-sm text-murcia-dark group-hover:text-murcia-red transition-colors flex items-center justify-between">
+                            <span>BP Murcia 2026</span>
+                            <i class="ph-bold ph-archive"></i>
+                        </div>
+                        <div class="font-mono text-xs text-gray-500 mt-1">Archivo Histórico XI</div>
+                    </a>
+
+                    <a href="2026/crono.html" class="p-3 border-2 border-gray-200 hover:border-murcia-dark hover:bg-gray-50 transition-colors group">
+                        <div class="font-display text-sm text-murcia-dark group-hover:text-murcia-red transition-colors flex items-center justify-between">
+                            <span>Timer 2026</span>
+                            <i class="ph-bold ph-timer"></i>
+                        </div>
+                        <div class="font-mono text-xs text-gray-500 mt-1">Temporizador Clásico</div>
+                    </a>
+
+                    <a href="legal.html" class="p-3 border-2 border-gray-200 hover:border-murcia-dark hover:bg-gray-50 transition-colors group">
+                        <div class="font-display text-sm text-murcia-dark group-hover:text-murcia-red transition-colors flex items-center justify-between">
+                            <span>Aviso Legal</span>
+                            <i class="ph-bold ph-scales"></i>
+                        </div>
+                        <div class="font-mono text-xs text-gray-500 mt-1">Privacidad & Equidad</div>
+                    </a>
+
+                </div>
+            </div>
+
+            <!-- Redirección automática opcional -->
+            <div id="redirect-box" class="mt-8 pt-4 border-t border-gray-200 flex items-center justify-between text-xs font-mono text-gray-500">
+                <span>Redirigiendo al portal de inicio en <strong id="countdown" class="text-murcia-red">12</strong>s...</span>
+                <button id="cancel-redirect" class="text-murcia-dark underline hover:text-murcia-red uppercase font-bold">
+                    Cancelar redirección
+                </button>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="p-6 md:p-8 bg-black text-white border-t-4 border-murcia-red">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
+            <div class="font-mono text-xs uppercase tracking-widest text-gray-400">
+                Club de Debate Universidad de Murcia • Debate UMU
+            </div>
+            <div class="flex flex-wrap gap-4 md:gap-6 font-mono text-xs uppercase tracking-widest">
+                <a href="legal.html" class="hover:text-murcia-red transition-colors underline decoration-murcia-red">Aviso Legal & Privacidad</a>
+                <a href="https://instagram.com/bpmurcia2026" target="_blank" class="hover:text-murcia-red transition-colors">Instagram</a>
+                <a href="https://instagram.com/clubdedebateum" target="_blank" class="hover:text-murcia-red transition-colors">Club de Debate</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script para path y cuenta regresiva -->
+    <script>
+        // Muestra la URL que falló
+        document.getElementById('requested-path').textContent = window.location.pathname + window.location.search;
+
+        // Cuenta regresiva para redirección automática al inicio
+        var seconds = 12;
+        var countdownEl = document.getElementById('countdown');
+        var cancelBtn = document.getElementById('cancel-redirect');
+        var redirectBox = document.getElementById('redirect-box');
+        
+        var timer = setInterval(function() {
+            seconds--;
+            if (countdownEl) countdownEl.textContent = seconds;
+            if (seconds <= 0) {
+                clearInterval(timer);
+                window.location.href = document.querySelector('base') ? document.querySelector('base').href : './';
+            }
+        }, 1000);
+
+        cancelBtn.addEventListener('click', function() {
+            clearInterval(timer);
+            redirectBox.innerHTML = '<span class="text-gray-500">Redirección automática cancelada.</span>';
+        });
+    </script>
+
+</body>
+</html>
